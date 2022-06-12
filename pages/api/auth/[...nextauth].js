@@ -7,8 +7,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default NextAuth({
-  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-  NEXTAUTH_URL: "http://localhost:3000/",
+  session: {
+    jwt: true,
+  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID,

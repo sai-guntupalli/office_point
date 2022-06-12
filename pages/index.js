@@ -1,6 +1,4 @@
 import { useSession } from "next-auth/react";
-import Head from "next/head";
-import Image from "next/image";
 import Card from "../components/card";
 import Dashboard from "../components/dashboard";
 import LandingPage from "../components/landing_page";
@@ -11,7 +9,7 @@ export default function RootPage() {
     <>
       {status === "authenticated" ? (
         <>
-          <Dashboard user_name={data.user.name}>
+          <Dashboard>
             <Card />
           </Dashboard>
         </>

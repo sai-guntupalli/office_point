@@ -1,7 +1,5 @@
-import { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
-  BellIcon,
   ClockIcon,
   CogIcon,
   CreditCardIcon,
@@ -14,39 +12,39 @@ import {
   UserGroupIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import {
-  CashIcon,
-  CheckCircleIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-  OfficeBuildingIcon,
-  SearchIcon,
-} from "@heroicons/react/solid";
-
+import { ChevronDownIcon } from "@heroicons/react/solid";
 import { signOut } from "next-auth/react";
+import { Fragment, useState } from "react";
+
+import { useSession } from "next-auth/react";
+
+import { useRouter } from "next/router";
 
 const navigation = [
-  { name: "Home", href: "#", icon: HomeIcon, current: true },
-  { name: "Leave Management", href: "/lms", icon: ClockIcon, current: false },
-  { name: "TimeSheet", href: "/timesheet", icon: ScaleIcon, current: false },
-  { name: "Paybook", href: "/paybook", icon: CreditCardIcon, current: false },
+  { name: "Home", href: "/", icon: HomeIcon },
+  { name: "Leave Management", href: "/lms", icon: ClockIcon },
+  { name: "TimeSheet", href: "/timesheet", icon: ScaleIcon },
+  { name: "Paybook", href: "/paybook", icon: CreditCardIcon },
   {
     name: "Documents",
     href: "/documents",
     icon: UserGroupIcon,
-    current: false,
   },
   {
     name: "Reports",
     href: "/reports",
     icon: DocumentReportIcon,
-    current: false,
+  },
+  {
+    name: "Add Employee",
+    href: "/add_employee",
+    icon: UserGroupIcon,
   },
 ];
 const secondaryNavigation = [
   { name: "Profile", href: "/profile", icon: QuestionMarkCircleIcon },
   { name: "Settings", href: "/settings", icon: CogIcon },
-  { name: "Privacy", href: "#", icon: ShieldCheckIcon },
+  { name: "Privacy", href: "/privacy", icon: ShieldCheckIcon },
 ];
 
 const statusStyles = {
@@ -61,17 +59,14 @@ function classNames(...classes) {
 
 export default function Dashboard(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { status, data } = useSession();
+  const router = useRouter();
+  const current_page = router.pathname;
+
+  console.log("current_page", current_page);
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -142,7 +137,7 @@ export default function Dashboard(props) {
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            item.current
+                            item.href === current_page
                               ? "bg-cyan-800 text-white"
                               : "text-cyan-100 hover:text-white hover:bg-cyan-600",
                             "group flex items-center px-2 py-2 text-base font-medium rounded-md"
@@ -163,7 +158,13 @@ export default function Dashboard(props) {
                           <a
                             key={item.name}
                             href={item.href}
-                            className="group flex items-center px-2 py-2 text-base font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600"
+                            className={classNames(
+                              item.href === current_page
+                                ? "bg-cyan-800 text-white"
+                                : "text-cyan-100 hover:text-white hover:bg-cyan-600",
+                              "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                            )}
+                            // className="group flex items-center px-2 py-2 text-base font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600"
                           >
                             <item.icon
                               className="mr-4 h-6 w-6 text-cyan-200"
@@ -208,7 +209,7 @@ export default function Dashboard(props) {
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      item.current
+                      item.href === current_page
                         ? "bg-cyan-800 text-white"
                         : "text-cyan-100 hover:text-white hover:bg-cyan-600",
                       "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
@@ -229,7 +230,13 @@ export default function Dashboard(props) {
                     <a
                       key={item.name}
                       href={item.href}
-                      className="group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600"
+                      className={classNames(
+                        item.href === current_page
+                          ? "bg-cyan-800 text-white"
+                          : "text-cyan-100 hover:text-white hover:bg-cyan-600",
+                        "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                      )}
+                      // className="group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600"
                     >
                       <item.icon
                         className="mr-4 h-6 w-6 text-cyan-200"
@@ -269,7 +276,7 @@ export default function Dashboard(props) {
                       />
                       <span className="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
                         <span className="sr-only">Open user menu for </span>
-                        {props.user_name}
+                        {data.user.name}
                       </span>
                       <ChevronDownIcon
                         className="hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block"
@@ -290,7 +297,7 @@ export default function Dashboard(props) {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/profile"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
@@ -303,7 +310,7 @@ export default function Dashboard(props) {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/settings"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"

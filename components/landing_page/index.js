@@ -43,7 +43,7 @@ export default function LandingPage() {
                       />
                     </a>
                     <div className="-mr-2 flex items-center md:hidden">
-                      <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                      <Popover.Button className="bg-white rounded-md p-2 inline-flex   items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                         <span className="sr-only">Open main menu</span>
                         <MenuIcon className="h-6 w-6" aria-hidden="true" />
                       </Popover.Button>
@@ -139,7 +139,7 @@ export default function LandingPage() {
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">
                   <button
-                    className="bg-indigo-600 hover:bg-blue-700 text-white  text-xl font-bold py-2 px-4 rounded"
+                    className="bg-indigo-600 shadow-lg shadow-indigo-600/50 hover:bg-blue-700 text-white  text-xl font-bold py-2 px-4 rounded"
                     onClick={() => {
                       signIn("github", {
                         callbackUrl: "http://localhost:3000/",
