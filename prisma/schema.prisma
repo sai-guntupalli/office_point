@@ -38,16 +38,14 @@ model Session {
 }
 
 model User {
-  id               String             @id @default(cuid())
-  name             String?
-  email            String?            @unique
-  emailVerified    DateTime?
-  image            String?
-  accounts         Account[]
-  sessions         Session[]
-  PersonalInfo     PersonalInfo[]
-  ProfessionalInfo ProfessionalInfo[]
-  Address          Address[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  profile       Profile?
 }
 
 model VerificationToken {
@@ -58,66 +56,51 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// model Employee {
-//   id String @id @default(cuid())
-//   emp_id String @unique
-//   personal_info
-
-// }
-
-model PersonalInfo {
-  id              String   @id @default(cuid())
-  user_id         String
-  first_name      String
-  last_name       String
-  date_of_birth   String
-  mobile_num      BigInt   @unique
-  personal_email  String   @unique
-  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  address         Address? @relation(fields: [address_id], references: [id])
-  address_id      String?
-  editable        Boolean  @default(true)
-  last_updated_at DateTime @updatedAt
-}
-
-model ProfessionalInfo {
-
+model Profile {
   id               String   @id @default(cuid())
-  user_id          String
-  emp_id           String   @unique
-  designation      String
-  mobile_num       BigInt   @unique
-  email_id         String   @unique
-  department       String
-  project          String?
+  user_id          String?  @unique
+  emp_id           String?  @unique
+  email            String?  @unique
+  first_name       String?
+  last_name        String?
+  date_of_birth    String?
   date_of_join     DateTime @default(now())
-  reports_to       String // @relation("managerRelation", fields: [emp_id], references: [id])
-  work_location    String
+  mobile_num       String?  @unique
+  personal_email   String?  @unique
+  manager          String?
   notice_period    Int?     @default(3)
   leaves_per_month Float?   @default(2)
   editable         Boolean  @default(true)
   last_updated_at  DateTime @updatedAt
 
-  user            User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  location        WorkLocation @relation(fields: [work_location], references: [location])
-  dept            Department   @relation(fields: [department], references: [dept])
-  proj            Project?     @relation(fields: [project], references: [project_name])
-  designation_key Designation  @relation(fields: [designation], references: [desination])
+
+  User          User?         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  department    Department?   @relation(fields: [department_id], references: [id])
+  project       Project?      @relation(fields: [project_id], references: [id])
+  designation   Designation?  @relation(fields: [designation_id], references: [id])
+  work_location WorkLocation? @relation(fields: [workLocation_id], references: [id])
+  address       Address?      @relation(fields: [address_id], references: [id])
+
+  department_id   String?
+  project_id      String?
+  designation_id  String?
+  workLocation_id String?
+  address_id      String?
 }
 
 model WorkLocation {
   id       String @id @default(cuid())
   location String @unique
 
-  ProfessionalInfo ProfessionalInfo[]
+  profile Profile[]
 }
 
 model Department {
   id   String @id @default(cuid())
   dept String @unique
 
-  ProfessionalInfo ProfessionalInfo[]
-  Project          Project[]
+  project Project[]
+  profile Profile[]
 }
 
 model Project {
@@ -129,7 +112,7 @@ model Project {
   dept   Department @relation(fields: [department], references: [dept])
   client Client     @relation(fields: [client_name], references: [name])
 
-  ProfessionalInfo ProfessionalInfo[]
+  profile Profile[]
 }
 
 model Client {
@@ -143,12 +126,11 @@ model Designation {
   id         String @id @default(cuid())
   desination String @unique
 
-  ProfessionalInfo ProfessionalInfo[]
+  profile Profile[]
 }
 
 model Address {
-  id              String         @id @default(cuid())
-  user_id         String
+  id              String   @id @default(cuid())
   door_num        String
   add_line1       String
   add_line2       String?
@@ -156,7 +138,7 @@ model Address {
   state           String
   country         String
   zipcode         String
-  last_updated_at DateTime       @updatedAt
-  user            User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  PersonalInfo    PersonalInfo[]
+  last_updated_at DateTime @updatedAt
+
+  profile Profile[]
 }

@@ -14,6 +14,7 @@ const AddEmployeePage = (props) => {
           designations={props.designations}
           departments={props.departments}
           projects={props.projects}
+          users={props.users}
         />
       </Dashboard>
     </>
@@ -21,6 +22,7 @@ const AddEmployeePage = (props) => {
 };
 
 export async function getServerSideProps() {
+  const allUsers = await prisma.User.findMany();
   const allLocs = await prisma.workLocation.findMany();
   const allDesignations = await prisma.Designation.findMany();
   const allProjects = await prisma.Project.findMany();
@@ -31,6 +33,7 @@ export async function getServerSideProps() {
       designations: allDesignations,
       departments: allDeps,
       projects: allProjects,
+      users: allUsers,
     },
   };
 }
