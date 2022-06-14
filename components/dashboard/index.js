@@ -60,6 +60,7 @@ function classNames(...classes) {
 export default function Dashboard(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { status, data } = useSession();
+  console.log("data from Session", data);
   const router = useRouter();
   const current_page = router.pathname;
 

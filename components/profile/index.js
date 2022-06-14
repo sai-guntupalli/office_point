@@ -1,4 +1,21 @@
+import { useSession } from "next-auth/react";
+
+async function getUserDataFromDb(email_id) {
+  const { status, data } = useSession();
+
+  fetch(`/api/org/employee/user/${data.user.email}`, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => console.log("GET data ", data));
+}
+
 export default function Profile() {
+  getUserDataFromDb();
   return (
     <div className=" m-0 bg-white shadow overflow-hidden sm:rounded-lg drop-shadow-2xl">
       <form className="space-y-8 divide-y divide-gray-200 p-6">
@@ -494,7 +511,7 @@ export default function Profile() {
               Cancel
             </button>
             <button
-              type="submit"
+              // onClick={getUserDataFromDb()}
               className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Save

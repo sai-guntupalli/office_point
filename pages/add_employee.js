@@ -27,6 +27,7 @@ export async function getServerSideProps() {
   const allDesignations = await prisma.Designation.findMany();
   const allProjects = await prisma.Project.findMany();
   const allDeps = await prisma.Department.findMany();
+
   return {
     props: {
       locations: allLocs,

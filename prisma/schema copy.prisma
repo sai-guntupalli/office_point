@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -30,6 +33,25 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+// model Account {
+//   id                String  @id @default(cuid())
+//   userId            String
+//   type              String
+//   provider          String
+//   providerAccountId String
+//   refresh_token     String? @db.Text
+//   access_token      String? @db.Text
+//   expires_at        Int?
+//   token_type        String?
+//   scope             String?
+//   id_token          String? @db.Text
+//   session_state     String?
+
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   @@unique([provider, providerAccountId])
+// }
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -61,25 +83,42 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// model Profile {
+//   id                      String   @id @default(cuid())
+//   user_id                 String?  @unique
+//   date_of_join            DateTime @default(now())
+//   professional_profile_id String?
+//   personal_profile_id     String?
+//   last_updated_at         DateTime @updatedAt
+
+//   User                User?                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+//   // professionalProfile ProfessionalProfile? @relation(fields: [professional_profile_id], references: [id])
+//   // personalProfile     PersonalProfile?     @relation(fields: [personal_profile_id], references: [id])
+// }
+
 model PersonalProfile {
-  id              String   @id @default(cuid())
-  user_id         String   @unique
-  first_name      String?
-  last_name       String?
-  date_of_birth   String?
-  personal_mobile String?  @unique
-  personal_email  String?  @unique
-  address_id      String?  @unique
+  id      String @id @default(cuid())
+  user_id String @unique
+
+  first_name    String?
+  last_name     String?
+  date_of_birth String?
+
+  personal_mobile String? @unique
+  personal_email  String? @unique
+  address_id      String? @unique
+
+  address Address? @relation(fields: [address_id], references: [id])
+
   editable        Boolean  @default(true)
   last_updated_at DateTime @updatedAt
 
-  address Address? @relation(fields: [address_id], references: [id])
-  user    User     @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 }
 
 model ProfessionalProfile {
   id               String   @id @default(cuid())
-  user_id          String?  @unique
+  user_id          String   @unique
   emp_id           String?  @unique
   role             String?
   job_type         String?
@@ -90,16 +129,20 @@ model ProfessionalProfile {
   leaves_per_month Float?   @default(2)
   editable         Boolean  @default(true)
   last_updated_at  DateTime @updatedAt
-  department_id    String?
-  project_id       String?
-  designation_id   String?
-  workLocation_id  String?
 
   department    Department?   @relation(fields: [department_id], references: [id])
   project       Project?      @relation(fields: [project_id], references: [id])
   designation   Designation?  @relation(fields: [designation_id], references: [id])
   work_location WorkLocation? @relation(fields: [workLocation_id], references: [id])
-  user          User?         @relation(fields: [user_id], references: [id])
+
+  department_id   String?
+  project_id      String?
+  designation_id  String?
+  workLocation_id String?
+
+  user User @relation(fields: [user_id], references: [id])
+
+
 }
 
 model WorkLocation {

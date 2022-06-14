@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 function AddEmployee(props) {
+  console.log("props ", props);
   const empUserIdRef = useRef();
   const empIdRef = useRef();
   const emailRef = useRef();
@@ -11,7 +12,7 @@ function AddEmployee(props) {
   const workLocRef = useRef();
   const projectRef = useRef();
 
-  const [selectedDept, setSelectedDept] = useState("");
+  const [selectedDept, setSelectedDept] = useState("Big Data");
 
   const changeSelectOptionHandler = (event) => {
     setSelectedDept(event.target.value);
@@ -34,6 +35,7 @@ function AddEmployee(props) {
     const enteredProject = projectRef.current.value;
 
     const reqBody = {
+      requestedInfo: "professional",
       empUserId: enteredUserId,
       empId: enteredEmpId,
       email: enteredEmail,
@@ -49,19 +51,9 @@ function AddEmployee(props) {
 
     console.log(JSON.stringify(reqBody));
 
-    // fetch(`/api/org/employee/profile/${enteredUserId}`, {
-    //   method: "POST",
-    //   body: JSON.stringify(reqBody),
-
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data));
-
     fetch(`/api/org/employee/profile/${enteredUserId}`, {
-      method: "GET",
+      method: "POST",
+      body: JSON.stringify(reqBody),
 
       headers: {
         "Content-Type": "application/json",
@@ -123,10 +115,8 @@ function AddEmployee(props) {
                     name="emp-id"
                     id="emp-id"
                     autoComplete="family-name"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md placeholder-opacity-40  bg-gray-100 cursor-not-allowed"
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md placeholder-opacity-40  "
                     ref={empIdRef}
-                    value="PT613"
-                    readOnly
                   />
                 </div>
               </div>
@@ -183,8 +173,8 @@ function AddEmployee(props) {
                     autoComplete="designation"
                     className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={designationRef}
-                    value="SE"
-                    disabled
+                    // value="SE"
+                    // disabled
                   >
                     {props.designations.map((des) => {
                       return <option>{des.desination}</option>;
