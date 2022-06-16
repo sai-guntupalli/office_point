@@ -4,13 +4,6 @@ import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { signIn } from "next-auth/react";
 
-const navigation = [
-  { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
-];
-
 export default function LandingPage() {
   return (
     <div className="relative bg-white overflow-hidden">
@@ -39,11 +32,11 @@ export default function LandingPage() {
                       <img
                         alt="Workflow"
                         className="h-8 w-auto sm:h-10"
-                        src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+                        src="https://tailwindui.com/img/logos/workflow-mark-cyan-600.svg"
                       />
                     </a>
                     <div className="-mr-2 flex items-center md:hidden">
-                      <Popover.Button className="bg-white rounded-md p-2 inline-flex   items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                      <Popover.Button className="bg-white rounded-md p-2 inline-flex   items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500">
                         <span className="sr-only">Open main menu</span>
                         <MenuIcon className="h-6 w-6" aria-hidden="true" />
                       </Popover.Button>
@@ -62,7 +55,7 @@ export default function LandingPage() {
                   ))} */}
                   <a
                     href="#"
-                    className="font-large text-indigo-600 hover:text-indigo-500 text-4xl"
+                    className="font-large text-cyan-600 hover:text-cyan-500 text-4xl"
                   >
                     Office Point
                   </a>
@@ -88,34 +81,28 @@ export default function LandingPage() {
                     <div>
                       <img
                         className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+                        src="https://tailwindui.com/img/logos/workflow-mark-cyan-600.svg"
                         alt=""
                       />
                     </div>
                     <div className="-mr-2">
-                      <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                      <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500">
                         <span className="sr-only">Close main menu</span>
                         <XIcon className="h-6 w-6" aria-hidden="true" />
                       </Popover.Button>
                     </div>
                   </div>
-                  <div className="px-2 pt-2 pb-3 space-y-1">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                  <a
-                    href="#"
-                    className="block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100"
+                  <div className="px-2 pt-2 pb-3 space-y-1"></div>
+                  <button
+                    className="bg-cyan-600 shadow-lg shadow-cyan-600/50 hover:bg-cyan-700 text-white  text-xl font-bold py-2 px-4 rounded"
+                    onClick={() => {
+                      signIn("github", {
+                        callbackUrl: "http://localhost:3000/",
+                      });
+                    }}
                   >
-                    Log in
-                  </a>
+                    Login
+                  </button>
                 </div>
               </Popover.Panel>
             </Transition>
@@ -127,7 +114,7 @@ export default function LandingPage() {
                 <span className="block xl:inline">
                   All your Office Needs at
                 </span>
-                <span className="block text-indigo-600 xl:inline mt-1  ">
+                <span className="block text-cyan-600 xl:inline mt-1  ">
                   One Place
                 </span>
               </h1>
@@ -139,7 +126,7 @@ export default function LandingPage() {
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">
                   <button
-                    className="bg-indigo-600 shadow-lg shadow-indigo-600/50 hover:bg-blue-700 text-white  text-xl font-bold py-2 px-4 rounded"
+                    className="bg-cyan-600 shadow-lg shadow-cyan-600/50 hover:bg-cyan-700 text-white  text-xl font-bold py-2 px-4 rounded"
                     onClick={() => {
                       signIn("github", {
                         callbackUrl: "http://localhost:3000/",

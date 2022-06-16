@@ -9,7 +9,7 @@ const handler = async (req, res) => {
       },
     });
 
-    console.log("user_data", user_data);
+    // console.log("user_data", user_data);
     const user_profile = await prisma.ProfessionalProfile.findUnique({
       where: {
         user_id: user_data.id,
@@ -22,7 +22,7 @@ const handler = async (req, res) => {
       },
     });
 
-    console.log("user_profile", user_profile);
+    // console.log("user_profile", user_profile);
     return res.status(200).json(user_profile);
   }
   res.end();

@@ -32,7 +32,8 @@ CREATE TABLE "User" (
     "emailVerified" DATETIME,
     "image" TEXT,
     "professional_profile_id" TEXT,
-    "personal_profile_id" TEXT
+    "personal_profile_id" TEXT,
+    "address_id" TEXT
 );
 
 -- CreateTable
@@ -51,17 +52,15 @@ CREATE TABLE "PersonalProfile" (
     "date_of_birth" TEXT,
     "personal_mobile" TEXT,
     "personal_email" TEXT,
-    "address_id" TEXT,
     "editable" BOOLEAN NOT NULL DEFAULT true,
-    "last_updated_at" DATETIME NOT NULL,
-    CONSTRAINT "PersonalProfile_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "PersonalProfile_address_id_fkey" FOREIGN KEY ("address_id") REFERENCES "Address" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "about" TEXT,
+    CONSTRAINT "PersonalProfile_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "ProfessionalProfile" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "user_id" TEXT NOT NULL,
+    "user_id" TEXT,
     "emp_id" TEXT,
     "role" TEXT,
     "job_type" TEXT,
@@ -71,12 +70,12 @@ CREATE TABLE "ProfessionalProfile" (
     "notice_period" INTEGER DEFAULT 3,
     "leaves_per_month" REAL DEFAULT 2,
     "editable" BOOLEAN NOT NULL DEFAULT true,
-    "last_updated_at" DATETIME NOT NULL,
+    "date_of_join" TEXT NOT NULL,
     "department_id" TEXT,
     "project_id" TEXT,
     "designation_id" TEXT,
     "workLocation_id" TEXT,
-    CONSTRAINT "ProfessionalProfile_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "ProfessionalProfile_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "ProfessionalProfile_workLocation_id_fkey" FOREIGN KEY ("workLocation_id") REFERENCES "WorkLocation" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "ProfessionalProfile_department_id_fkey" FOREIGN KEY ("department_id") REFERENCES "Department" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "ProfessionalProfile_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "Project" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
@@ -115,12 +114,13 @@ CREATE TABLE "Client" (
 -- CreateTable
 CREATE TABLE "Designation" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "desination" TEXT NOT NULL
+    "designation" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "Address" (
     "id" TEXT NOT NULL PRIMARY KEY,
+    "user_id" TEXT NOT NULL,
     "door_num" TEXT NOT NULL,
     "add_line1" TEXT NOT NULL,
     "add_line2" TEXT,
@@ -128,7 +128,7 @@ CREATE TABLE "Address" (
     "state" TEXT NOT NULL,
     "country" TEXT NOT NULL,
     "zipcode" TEXT NOT NULL,
-    "last_updated_at" DATETIME NOT NULL
+    CONSTRAINT "Address_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -147,6 +147,9 @@ CREATE UNIQUE INDEX "User_professional_profile_id_key" ON "User"("professional_p
 CREATE UNIQUE INDEX "User_personal_profile_id_key" ON "User"("personal_profile_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_address_id_key" ON "User"("address_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
 
 -- CreateIndex
@@ -160,9 +163,6 @@ CREATE UNIQUE INDEX "PersonalProfile_personal_mobile_key" ON "PersonalProfile"("
 
 -- CreateIndex
 CREATE UNIQUE INDEX "PersonalProfile_personal_email_key" ON "PersonalProfile"("personal_email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "PersonalProfile_address_id_key" ON "PersonalProfile"("address_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ProfessionalProfile_user_id_key" ON "ProfessionalProfile"("user_id");
@@ -189,4 +189,7 @@ CREATE UNIQUE INDEX "Project_project_name_key" ON "Project"("project_name");
 CREATE UNIQUE INDEX "Client_name_key" ON "Client"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Designation_desination_key" ON "Designation"("desination");
+CREATE UNIQUE INDEX "Designation_designation_key" ON "Designation"("designation");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Address_user_id_key" ON "Address"("user_id");

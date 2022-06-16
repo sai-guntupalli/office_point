@@ -1,11 +1,9 @@
-import Card from "../components/card";
 import Dashboard from "../components/dashboard";
-import AddEmployee from "../components/add_employee";
+import AddEmployee from "../components/pages/add_employee";
 
 import prisma from "../lib/prisma";
 
 const AddEmployeePage = (props) => {
-  console.log("props", props);
   return (
     <>
       <Dashboard>

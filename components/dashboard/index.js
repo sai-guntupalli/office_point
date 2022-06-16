@@ -19,6 +19,7 @@ import { Fragment, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
@@ -134,7 +135,7 @@ export default function Dashboard(props) {
                   >
                     <div className="px-2 space-y-1">
                       {navigation.map((item) => (
-                        <a
+                        <Link
                           key={item.name}
                           href={item.href}
                           className={classNames(
@@ -150,13 +151,13 @@ export default function Dashboard(props) {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                     <div className="mt-6 pt-6">
                       <div className="px-2 space-y-1">
                         {secondaryNavigation.map((item) => (
-                          <a
+                          <Link
                             key={item.name}
                             href={item.href}
                             className={classNames(
@@ -172,7 +173,7 @@ export default function Dashboard(props) {
                               aria-hidden="true"
                             />
                             {item.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -206,45 +207,47 @@ export default function Dashboard(props) {
             >
               <div className="px-2 space-y-1">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.href === current_page
-                        ? "bg-cyan-800 text-white"
-                        : "text-cyan-100 hover:text-white hover:bg-cyan-600",
-                      "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
-                    )}
-                    aria-current={item.current ? "page" : undefined}
-                  >
-                    <item.icon
-                      className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200"
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </a>
+                  <Link href={item.href}>
+                    <a
+                      key={item.name}
+                      className={classNames(
+                        item.href === current_page
+                          ? "bg-cyan-800 text-white"
+                          : "text-cyan-100 hover:text-white hover:bg-cyan-600",
+                        "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
+                      )}
+                      aria-current={item.current ? "page" : undefined}
+                    >
+                      <item.icon
+                        className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200"
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </a>
+                  </Link>
                 ))}
               </div>
               <div className="mt-6 pt-6">
                 <div className="px-2 space-y-1">
                   {secondaryNavigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        item.href === current_page
-                          ? "bg-cyan-800 text-white"
-                          : "text-cyan-100 hover:text-white hover:bg-cyan-600",
-                        "group flex items-center px-2 py-2 text-base font-medium rounded-md"
-                      )}
-                      // className="group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600"
-                    >
-                      <item.icon
-                        className="mr-4 h-6 w-6 text-cyan-200"
-                        aria-hidden="true"
-                      />
-                      {item.name}
-                    </a>
+                    <Link href={item.href}>
+                      <a
+                        key={item.name}
+                        className={classNames(
+                          item.href === current_page
+                            ? "bg-cyan-800 text-white"
+                            : "text-cyan-100 hover:text-white hover:bg-cyan-600",
+                          "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                        )}
+                        // className="group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-cyan-100 hover:text-white hover:bg-cyan-600"
+                      >
+                        <item.icon
+                          className="mr-4 h-6 w-6 text-cyan-200"
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -272,7 +275,7 @@ export default function Dashboard(props) {
                     <Menu.Button className="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src="https://i.pinimg.com/474x/93/4d/fc/934dfc25d30876f292be68bd0616fa30.jpg"
                         alt=""
                       />
                       <span className="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
@@ -297,28 +300,30 @@ export default function Dashboard(props) {
                     <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="/profile"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Your Profile
-                          </a>
+                          <Link href="/profile">
+                            <a
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-cyan-600"
+                              )}
+                            >
+                              Profile
+                            </a>
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="/settings"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Settings
-                          </a>
+                          <Link href="/settings">
+                            <a
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm ttext-gray-700 hover:bg-cyan-600 hover:text-white"
+                              )}
+                            >
+                              Settings
+                            </a>
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
@@ -331,7 +336,7 @@ export default function Dashboard(props) {
                             }}
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-sm text-gray-700 hover:bg-cyan-600 hover:text-white"
                             )}
                           >
                             Logout

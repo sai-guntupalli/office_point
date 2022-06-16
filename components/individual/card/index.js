@@ -1,7 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { PaperClipIcon } from "@heroicons/react/solid";
 
-export default function Card() {
+export default function Card(props) {
+  const user_data = props.user_data;
+  console.log("props", props);
+  const prof_data = props.professional_profile;
+  const personal_data = props.personal_profile;
+
+  console.log("user_data in Card", user_data);
+  console.log("prof_data in Card", prof_data);
+  console.log("personal_data in Card", personal_data);
+
   return (
     <div className="bg-white shadow overflow-hidden sm:rounded-lg drop-shadow-2xl">
       <div className="px-4 py-5 sm:px-6">
@@ -17,7 +26,7 @@ export default function Card() {
           <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-500">Full name</dt>
             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              Margot Foster
+              {prof_data?.emp_id}
             </dd>
           </div>
           <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

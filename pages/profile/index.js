@@ -1,31 +1,26 @@
+import Dashboard from "../../components/dashboard";
+import ProfileDisplay from "../../components/pages/profile/personal_profile";
 import { getSession, useSession } from "next-auth/react";
-import HomeDiv from "../components/individual/card";
-import Dashboard from "../components/dashboard";
-import LandingPage from "../components/pages/landing_page";
-import HomePage from "../components/pages/home_page";
-import prisma from "../lib/prisma";
+import prisma from "../../lib/prisma";
+import ProfessionalProfile from "../../components/pages/profile/professional_profile";
 
-export default function RootPage(props) {
-  const { status, data } = useSession();
-
+const ProfilePage = (props) => {
   return (
     <>
-      {status === "authenticated" ? (
-        <>
-          <Dashboard>
-            <HomePage
-              user_data={props.user_data}
-              professional_profile={props.professional_profile}
-              personal_profile={props.personal_profile}
-            />
-          </Dashboard>
-        </>
-      ) : (
-        <LandingPage />
-      )}
+      <Dashboard>
+        <ProfessionalProfile
+          professional_profile={props?.professional_profile}
+        />
+        <ProfileDisplay
+          personal_profile={props?.personal_profile}
+          address={props?.address}
+        />
+      </Dashboard>
     </>
   );
-}
+};
+
+export default ProfilePage;
 
 export async function getServerSideProps(context) {
   let user_data;
@@ -52,6 +47,12 @@ export async function getServerSideProps(context) {
       },
     });
 
+    const address = await prisma.Address.findUnique({
+      where: {
+        user_id: user_data?.id,
+      },
+    });
+
     const personal_profile = await prisma.PersonalProfile.findUnique({
       where: {
         user_id: user_data.id,
@@ -63,6 +64,7 @@ export async function getServerSideProps(context) {
         user_data: user_data,
         professional_profile: professional_profile,
         personal_profile: personal_profile,
+        address: address,
       },
     };
   } else {
@@ -71,6 +73,7 @@ export async function getServerSideProps(context) {
         user_data: null,
         professional_profile: null,
         personal_profile: null,
+        address: null,
       },
     };
   }

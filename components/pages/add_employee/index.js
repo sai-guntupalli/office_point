@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 
 function AddEmployee(props) {
   console.log("props ", props);
+  const router = useRouter();
+
   const empUserIdRef = useRef();
   const empIdRef = useRef();
   const emailRef = useRef();
@@ -11,6 +14,7 @@ function AddEmployee(props) {
   const managerRef = useRef();
   const workLocRef = useRef();
   const projectRef = useRef();
+  const dateOfJoinRef = useRef();
 
   const [selectedDept, setSelectedDept] = useState("Big Data");
 
@@ -33,6 +37,7 @@ function AddEmployee(props) {
     const enteredManager = managerRef.current.value;
     const enteredWorkLoc = workLocRef.current.value;
     const enteredProject = projectRef.current.value;
+    const enteredDOF = dateOfJoinRef.current.value;
 
     const reqBody = {
       requestedInfo: "professional",
@@ -45,6 +50,7 @@ function AddEmployee(props) {
       manager: enteredManager,
       workLoc: enteredWorkLoc,
       project: enteredProject,
+      dateOfJoin: enteredDOF,
     };
 
     console.log("reqBody", reqBody);
@@ -61,6 +67,7 @@ function AddEmployee(props) {
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
+    router.push("/profile");
   }
 
   return (
@@ -92,7 +99,7 @@ function AddEmployee(props) {
                     id="emp-user-id"
                     name="emp-user-id"
                     autoComplete="emp-user-id"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={empUserIdRef}
                   >
                     {props.users.map((user) => {
@@ -102,12 +109,12 @@ function AddEmployee(props) {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              <div className="sm:col-span-1">
                 <label
                   htmlFor="emp-id"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Employee Number
+                  Employee Id
                 </label>
                 <div className="mt-1">
                   <input
@@ -115,8 +122,27 @@ function AddEmployee(props) {
                     name="emp-id"
                     id="emp-id"
                     autoComplete="family-name"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md placeholder-opacity-40  "
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md placeholder-opacity-40  "
                     ref={empIdRef}
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-1">
+                <label
+                  htmlFor="reports-to"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Date Of Join
+                </label>
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    name="date-of-join"
+                    id="date-of-join"
+                    autoComplete="date-of-join"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    ref={dateOfJoinRef}
                   />
                 </div>
               </div>
@@ -134,7 +160,7 @@ function AddEmployee(props) {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={emailRef}
                   />
                 </div>
@@ -153,7 +179,7 @@ function AddEmployee(props) {
                     name="mobile-num"
                     id="mobile-num"
                     autoComplete="family-name"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={mobileRef}
                   />
                 </div>
@@ -171,13 +197,13 @@ function AddEmployee(props) {
                     id="designation"
                     name="designation"
                     autoComplete="designation"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={designationRef}
                     // value="SE"
                     // disabled
                   >
                     {props.designations.map((des) => {
-                      return <option>{des.desination}</option>;
+                      return <option>{des.designation}</option>;
                     })}
                   </select>
                 </div>
@@ -196,7 +222,7 @@ function AddEmployee(props) {
                     name="reports-to"
                     id="reports-to"
                     autoComplete="reports-to"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={managerRef}
                   />
                 </div>
@@ -214,7 +240,7 @@ function AddEmployee(props) {
                     id="department"
                     name="department"
                     autoComplete="department"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     onChange={changeSelectOptionHandler}
                     ref={deptRef}
                   >
@@ -237,7 +263,7 @@ function AddEmployee(props) {
                     id="project"
                     name="project"
                     autoComplete="project"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={projectRef}
                   >
                     {props.projects.map((proj) => {
@@ -273,7 +299,7 @@ function AddEmployee(props) {
                     id="country"
                     name="country"
                     autoComplete="country-name"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={workLocRef}
                   >
                     {props.locations.map((loc) => {
@@ -290,14 +316,14 @@ function AddEmployee(props) {
 
         <div className="pt-5">
           <div className="flex justify-end">
-            <button
+            {/* <button
               type="button"
-              className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
             >
               Cancel
-            </button>
-            <button className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Update Data
+            </button> */}
+            <button className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
+              Add Employee
             </button>
           </div>
         </div>
