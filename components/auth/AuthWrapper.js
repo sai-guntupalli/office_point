@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import ProtectedRoute from "./ProtectedRoute";
 
-const protectedRoutes = ["/home", "/about"];
+const unProtected = ["/"];
 const AuthWrapper = ({ children }) => {
   const { status, data } = useSession();
   const router = useRouter();
@@ -12,7 +12,7 @@ const AuthWrapper = ({ children }) => {
 
   return (
     <>
-      {protectedRoutes.includes(router.pathname) ? (
+      {!unProtected.includes(router.pathname) ? (
         <ProtectedRoute>{children}</ProtectedRoute>
       ) : (
         children

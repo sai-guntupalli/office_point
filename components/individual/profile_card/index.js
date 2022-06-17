@@ -1,13 +1,6 @@
 import Link from "next/link";
 
-export default function ProfileCard(props) {
-  console.log("props in Profilecard :", props);
-
-  const user_data = props?.user_data;
-  const prof_data = props?.professional_profile;
-  const personal_data = props?.personal_profile;
-
-  console.log("personal_data in Profilecard :", personal_data);
+export default function ProfileCard({ professional_data, personal_data }) {
   return (
     <>
       {personal_data !== null ? (
@@ -34,7 +27,7 @@ export default function ProfileCard(props) {
                       {personal_data.first_name + " " + personal_data.last_name}
                     </p>
                     <p className="text-sm font-medium text-gray-600">
-                      {prof_data.designation.desination}
+                      {professional_data.designation.desination}
                     </p>
                   </div>
                 </div>

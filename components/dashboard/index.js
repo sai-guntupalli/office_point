@@ -20,6 +20,7 @@ import { useSession } from "next-auth/react";
 
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Breadcrumbs from "../individual/bread_crumbs";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
@@ -61,7 +62,7 @@ function classNames(...classes) {
 export default function Dashboard(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { status, data } = useSession();
-  console.log("data from Session", data);
+  // console.log("data from Session", data);
   const router = useRouter();
   const current_page = router.pathname;
 
@@ -267,7 +268,8 @@ export default function Dashboard(props) {
             </button>
             {/* Search bar */}
             <div className="flex-1 px-4 flex justify-between sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-              <div className="flex-1 flex mt-4">{props.active_page}</div>
+              {/* <div className="flex-1 flex mt-4">{props.active_page}</div> */}
+              <Breadcrumbs />
               <div className="ml-4 flex items-center md:ml-6">
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
@@ -280,7 +282,7 @@ export default function Dashboard(props) {
                       />
                       <span className="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
                         <span className="sr-only">Open user menu for </span>
-                        {data.user.name}
+                        {data?.user?.name}
                       </span>
                       <ChevronDownIcon
                         className="hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block"

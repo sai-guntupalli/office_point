@@ -15,8 +15,8 @@ export default function RootPage(props) {
           <Dashboard>
             <HomePage
               user_data={props.user_data}
-              professional_profile={props.professional_profile}
-              personal_profile={props.personal_profile}
+              professional_data={props.professional_profile}
+              personal_data={props.personal_profile}
             />
           </Dashboard>
         </>
