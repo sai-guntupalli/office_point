@@ -1,14 +1,15 @@
 import Dashboard from "../../components/dashboard";
+import Holidays from "../../components/pages/lms/Holidays";
 import LMSOptions from "../../components/pages/lms/LmsOptions";
 import LMSTabs from "../../components/pages/lms/LMSTabs";
 
 const LMSPage = (props) => {
-  console.log("props in LMS" + props);
   return (
     <>
       <Dashboard>
         <LMSTabs />
-        <LMSOptions />
+        {/* <LMSOptions /> */}
+        <Holidays />
       </Dashboard>
     </>
   );

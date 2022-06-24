@@ -103,6 +103,16 @@ export default function LandingPage() {
                   >
                     Login
                   </button>
+                  <button
+                    className="bg-cyan-600 shadow-lg shadow-cyan-600/50 hover:bg-cyan-700 text-white  text-xl font-bold py-2 px-4 rounded"
+                    onClick={() => {
+                      signIn("github", {
+                        callbackUrl: "http://localhost:3000/",
+                      });
+                    }}
+                  >
+                    Google Login
+                  </button>
                 </div>
               </Popover.Panel>
             </Transition>
@@ -133,7 +143,17 @@ export default function LandingPage() {
                       });
                     }}
                   >
-                    Login
+                    Github Login
+                  </button>
+                  <button
+                    className="ml-6 bg-cyan-600 shadow-lg shadow-cyan-600/50 hover:bg-cyan-700 text-white  text-xl font-bold py-2 px-4 rounded"
+                    onClick={() => {
+                      signIn("google", {
+                        callbackUrl: "http://localhost:3000/",
+                      });
+                    }}
+                  >
+                    Google Login
                   </button>
                 </div>
               </div>

@@ -53,6 +53,7 @@ model User {
   PersonalProfile     PersonalProfile?
   ProfessionalProfile ProfessionalProfile?
   Address             Address?
+  Leave               Leave[]
 }
 
 model VerificationToken {
@@ -162,3 +163,26 @@ model Address {
   user User? @relation(fields: [user_id], references: [id])
 
 }
+
+model Leave {
+  id         String   @id @default(cuid())
+  start_date DateTime
+  end_date   DateTime
+  num_days   Int
+  leave_type String
+  reason     String
+  status     String
+  user_id    String
+  manager_id String
+
+  user User? @relation(fields: [user_id], references: [id])
+
+}
+
+// leave types - sick, priviliged, maternity, peternity, other
+// leave status - pending, approved, rejected.
+
+// enum LeaveType {
+//   "SICK"
+
+// }

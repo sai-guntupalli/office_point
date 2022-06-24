@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/poppins-v20-latin-500.woff2") format("woff2");
+    font-weight: 300;
+    font-display: swap;
+    font-style: normal;
+  }
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+  border-radius: 6px;
+}
