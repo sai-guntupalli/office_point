@@ -2,7 +2,7 @@ import prisma from "../../../../../lib/prisma";
 
 const handler = async (req, res) => {
   console.log("indide emp api");
-  const user_id = req.query.user_id;
+  const user_id = req?.query?.user_id;
   if (req.method === "POST") {
     const { body } = req;
     const requestedInfo = body.requestedInfo;

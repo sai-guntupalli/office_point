@@ -1,175 +1,209 @@
+import { useState, useEffect } from "react";
+import { ExclamationIcon } from "@heroicons/react/solid";
+
+function classNames(status) {
+  let class_name =
+    "inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800";
+
+  if (status === "pending") {
+    class_name =
+      "inline-flex rounded-full bg-gray-100 px-2 text-xs font-semibold leading-5 text-gray-800";
+  } else if (status === "rejected") {
+    class_name =
+      "inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800";
+  } else {
+    class_name =
+      "inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800";
+  }
+  return class_name;
+}
+
 function LeaveHistory(props) {
+  const [leaves, setLeaves] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  const [leaveType, setLeaveType] = useState("all");
+  const [leaveStatus, setLeaveStatus] = useState("all");
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(
+      `/api/org/employee/leave_request/${props?.user_data?.id}&${leaveType}&${leaveStatus}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setLeaves(data);
+        setLoading(false);
+      });
+  }, [leaveType, leaveStatus]);
+
   return (
     <>
-      {/* <div class="px-4 sm:px-6 lg:px-8">
-        <div class="sm:flex sm:items-center">
-          <div class="sm:flex-auto">
-            <h1 class="text-xl font-semibold text-gray-900">Users</h1>
-            <p class="mt-2 text-sm text-gray-700">
-              A list of all the users in your account including their name,
-              title, email and role.
-            </p>
-          </div>
-          <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-            <button
-              type="button"
-              class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-            >
-              Add user
-            </button>
-          </div>
-        </div>
-        <div class="mt-8 flex flex-col">
-          <div class="-my-2 -mx-4 sm:-mx-6 lg:-mx-8">
-            <div class="inline-block min-w-full py-2 align-middle">
-              <div class="shadow-sm ring-1 ring-black ring-opacity-5">
-                <table
-                  class="min-w-full border-separate"
-                  style="border-spacing: 0"
-                >
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
-                      >
-                        Name
-                      </th>
-                      <th
-                        scope="col"
-                        class="sticky top-0 z-10 hidden border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
-                      >
-                        Title
-                      </th>
-                      <th
-                        scope="col"
-                        class="sticky top-0 z-10 hidden border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter lg:table-cell"
-                      >
-                        Email
-                      </th>
-                      <th
-                        scope="col"
-                        class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                      >
-                        Role
-                      </th>
-                      <th
-                        scope="col"
-                        class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pr-4 pl-3 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
-                      >
-                        <span class="sr-only">Edit</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white">
-                    <tr>
-                      <td class="whitespace-nowrap border-b border-gray-200 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
-                        Lindsay Walton
-                      </td>
-                      <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500 hidden sm:table-cell">
-                        Front-end Developer
-                      </td>
-                      <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500 hidden lg:table-cell">
-                        lindsay.walton@example.com
-                      </td>
-                      <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">
-                        Member
-                      </td>
-                      <td class="relative whitespace-nowrap border-b border-gray-200 py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6 lg:pr-8">
-                        <a
-                          href="#"
-                          class="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Edit<span class="sr-only">, Lindsay Walton</span>
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+      <div className="">
+        <div className="">
+          <div class="grid grid-cols-6 gap-6 mt-4">
+            <div class="col-span-6 sm:col-span-3 ">
+              <label
+                for="country"
+                class="block text-sm font-medium text-gray-700"
+              >
+                Leave Type
+              </label>
+              <select
+                onChange={(e) => setLeaveType(e.target.value)}
+                id="leave_type"
+                name="leave_type"
+                autocomplete="leave_type"
+                // ref={leaveTypeRef}
+                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
+              >
+                <option value="all">All Types</option>
+                <option value="sick">Sick Leave</option>
+                <option value="privilege">Privilege Leave</option>
+                <option value="maternity">Maternity Leave</option>
+                <option value="peternity">Paternity Leave</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="col-span-6 sm:col-span-3 ">
+              <label
+                for="country"
+                class="block text-sm font-medium text-gray-700"
+              >
+                Leave Status
+              </label>
+              <select
+                onChange={(e) => setLeaveStatus(e.target.value)}
+                id="leave_type"
+                name="leave_type"
+                autocomplete="leave_type"
+                // ref={leaveTypeRef}
+                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
+              >
+                <option value="all">All Leaves</option>
+                <option value="approved">Approved Leaves</option>
+                <option value="rejected">Rejected Leaves</option>
+                <option value="pending">Pending Leaves</option>
+              </select>
             </div>
           </div>
         </div>
-      </div> */}
-      <div class="px-4 sm:px-6 lg:px-8">
-        <div class="sm:flex sm:items-center">
-          <div class="sm:flex-auto">
-            <h1 class="text-xl font-semibold text-gray-900">Users</h1>
-            <p class="mt-2 text-sm text-gray-700">
-              A list of all the users in your account including their name,
-              title, email and role.
-            </p>
-          </div>
-          <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-            <button
-              type="button"
-              class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-            >
-              Add user
-            </button>
-          </div>
-        </div>
-        <div class="mt-8 flex flex-col">
-          <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                <table class="min-w-full divide-y divide-gray-300">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6"
-                      >
-                        Name
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500"
-                      >
-                        Title
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500"
-                      >
-                        Email
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500"
-                      >
-                        Role
-                      </th>
-                      <th scope="col" class="relative py-3 pl-3 pr-4 sm:pr-6">
-                        <span class="sr-only">Edit</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-gray-200 bg-white">
-                    <tr>
-                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        Lindsay Walton
-                      </td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        Front-end Developer
-                      </td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        lindsay.walton@example.com
-                      </td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        Member
-                      </td>
-                      <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a
-                          href="#"
-                          class="text-indigo-600 hover:text-indigo-900"
+        <div className="mt-8 flex flex-col">
+          <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                {leaves?.length > 0 ? (
+                  <table className="min-w-full divide-y divide-gray-300">
+                    <thead className="bg-cyan-600">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
                         >
-                          Edit<span class="sr-only">, Lindsay Walton</span>
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                          Start Date
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
+                        >
+                          End Date
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
+                        >
+                          Num of Days
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
+                        >
+                          Leave Type
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
+                        >
+                          Description
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
+                        >
+                          Status
+                        </th>
+                        <th
+                          scope="col"
+                          className="relative py-3 pl-3 pr-4 sm:pr-6"
+                        >
+                          <span className="sr-only">Edit</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 bg-white">
+                      {leaves?.map((leave) => (
+                        <tr key={leave._id}>
+                          <td
+                            key={leave._id}
+                            className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-black-500 sm:pl-6"
+                          >
+                            {leave.start_date}
+                          </td>
+                          <td
+                            key={leave._id}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-black-500"
+                          >
+                            {leave.end_date}
+                          </td>
+                          <td
+                            key={leave._id}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-black-500"
+                          >
+                            {leave.num_days}
+                          </td>
+                          <td
+                            key={leave._id}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-black-500"
+                          >
+                            {leave.leave_type}
+                          </td>
+                          <td
+                            key={leave._id}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-black-500"
+                          >
+                            {leave.reason}
+                          </td>
+                          <td
+                            key={leave._id}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-black-500"
+                          >
+                            <span className={classNames(leave.status)}>
+                              {leave.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div className="rounded-md bg-yellow-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <ExclamationIcon
+                          className="h-5 w-5 text-yellow-400"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-yellow-800">
+                          No Leaves Found
+                        </h3>
+                        <div className="mt-2 text-sm text-yellow-700">
+                          <p>{`No ${leaveType.toUpperCase()} - ${leaveStatus.toUpperCase()} Leaves are found.`}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

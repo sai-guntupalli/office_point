@@ -2,14 +2,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
-// }
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
 
 model Account {
   id                String  @id @default(cuid())
@@ -49,11 +50,12 @@ model User {
   professional_profile_id String?   @unique
   personal_profile_id     String?   @unique
   address_id              String?   @unique
+  leave_profile_id        String?   @unique
 
   PersonalProfile     PersonalProfile?
   ProfessionalProfile ProfessionalProfile?
   Address             Address?
-  Leave               Leave[]
+  LeaveProfile        LeaveProfile?
 }
 
 model VerificationToken {
@@ -81,29 +83,40 @@ model PersonalProfile {
 }
 
 model ProfessionalProfile {
-  id               String  @id @default(cuid())
-  user_id          String? @unique
-  emp_id           String? @unique
-  role             String?
-  job_type         String?
-  email            String? @unique
-  mobile           String? @unique
-  manager          String?
-  notice_period    Int?    @default(3)
-  leaves_per_month Float?  @default(2)
-  editable         Boolean @default(true)
-  date_of_join     String
+  id            String  @id @default(cuid())
+  user_id       String  @unique
+  emp_id        String? @unique
+  role          String?
+  job_type      String?
+  email         String? @unique
+  mobile        String? @unique
+  manager       String?
+  notice_period Int?    @default(3)
+
+  editable        Boolean @default(true)
+  date_of_join    String
   // last_updated_at  DateTime @updatedAt
-  department_id    String?
-  project_id       String?
-  designation_id   String?
-  workLocation_id  String?
+  department_id   String?
+  project_id      String?
+  designation_id  String?
+  workLocation_id String?
 
   department    Department?   @relation(fields: [department_id], references: [id])
   project       Project?      @relation(fields: [project_id], references: [id])
   designation   Designation?  @relation(fields: [designation_id], references: [id])
   work_location WorkLocation? @relation(fields: [workLocation_id], references: [id])
   user          User?         @relation(fields: [user_id], references: [id])
+}
+
+model LeaveProfile {
+  id                    String @id @default(cuid())
+  user_id               String @unique
+  leaves_per_month      Float? @default(2)
+  carry_foreward_leaves Float? @default(0)
+  leaves_taken          Int?   @default(0)
+
+  user  User?   @relation(fields: [user_id], references: [id])
+  Leave Leave[]
 }
 
 model WorkLocation {
@@ -165,17 +178,19 @@ model Address {
 }
 
 model Leave {
-  id         String   @id @default(cuid())
-  start_date DateTime
-  end_date   DateTime
-  num_days   Int
-  leave_type String
-  reason     String
-  status     String
-  user_id    String
-  manager_id String
+  id               String   @id @default(cuid())
+  start_date       String
+  end_date         String
+  leave_dates      String[]
+  num_days         Int
+  leave_type       String
+  reason           String
+  status           String?  @default("pending")
+  leave_profile_id String
+  manager_id       String?
+  requested_at     DateTime @updatedAt
 
-  user User? @relation(fields: [user_id], references: [id])
+  leaveProfile LeaveProfile? @relation(fields: [leave_profile_id], references: [id])
 
 }
 

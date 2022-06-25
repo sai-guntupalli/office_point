@@ -6,7 +6,7 @@ export default function ProfileForm(props) {
   const personal_info = props?.personal_profile;
   const router = useRouter();
 
-  const user_info = props?.user_profile;
+  // const user_info = props?.user_profile;
   const address = props?.address;
 
   const fNameRef = useRef();
