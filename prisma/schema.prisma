@@ -45,6 +45,10 @@ model User {
   email                   String?   @unique
   emailVerified           DateTime?
   image                   String?
+  role                    String?   @default("user")
+  // manager_id              String?
+  // manager                 User?     @relation("ManagerEmployee", fields: [manager_id], references: [id])
+  // employees               User[]    @relation("ManagerEmployee")
   accounts                Account[]
   sessions                Session[]
   professional_profile_id String?   @unique
@@ -56,6 +60,8 @@ model User {
   ProfessionalProfile ProfessionalProfile?
   Address             Address?
   LeaveProfile        LeaveProfile?
+  Project             Project[]
+  Leave               Leave[]
 }
 
 model VerificationToken {
@@ -79,20 +85,15 @@ model PersonalProfile {
   // last_updated_at DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id])
-
 }
 
 model ProfessionalProfile {
-  id            String  @id @default(cuid())
-  user_id       String  @unique
-  emp_id        String? @unique
-  role          String?
-  job_type      String?
-  email         String? @unique
-  mobile        String? @unique
-  manager       String?
-  notice_period Int?    @default(3)
-
+  id              String  @id @default(cuid())
+  user_id         String  @unique
+  job_type        String?
+  // email           String? @unique
+  // mobile          String? @unique
+  notice_period   Int?    @default(3)
   editable        Boolean @default(true)
   date_of_join    String
   // last_updated_at  DateTime @updatedAt
@@ -139,10 +140,11 @@ model Project {
   project_name String  @unique
   client_name  String?
   department   String?
-  manager      String?
+  manager_id   String?
 
-  dept   Department? @relation(fields: [department], references: [dept])
-  client Client?     @relation(fields: [client_name], references: [name])
+  manager User?       @relation(fields: [manager_id], references: [id])
+  dept    Department? @relation(fields: [department], references: [dept])
+  client  Client?     @relation(fields: [client_name], references: [name])
 
   ProfessionalProfile ProfessionalProfile[]
 }
@@ -174,7 +176,6 @@ model Address {
   // last_updated_at DateTime @updatedAt
 
   user User? @relation(fields: [user_id], references: [id])
-
 }
 
 model Leave {
@@ -188,10 +189,10 @@ model Leave {
   status           String?  @default("pending")
   leave_profile_id String
   manager_id       String?
+  manager          User?    @relation(fields: [manager_id], references: [id])
   requested_at     DateTime @updatedAt
 
   leaveProfile LeaveProfile? @relation(fields: [leave_profile_id], references: [id])
-
 }
 
 // leave types - sick, priviliged, maternity, peternity, other
@@ -201,3 +202,13 @@ model Leave {
 //   "SICK"
 
 // }
+
+model Holiday {
+  id          String  @id @default(cuid())
+  date        String
+  description String  @default("Not Specified")
+  location    String
+  country     String?
+
+  @@unique([date, location])
+}

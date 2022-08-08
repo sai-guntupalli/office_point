@@ -1,9 +1,8 @@
 import { getSession, useSession } from "next-auth/react";
-import HomeDiv from "../components/individual/card";
-import Dashboard from "../components/dashboard";
 import LandingPage from "../components/pages/landing_page";
 import HomePage from "../components/pages/home_page";
 import prisma from "../lib/prisma";
+import Dashboard from "../components/dashboard";
 
 export default function RootPage(props) {
   const { status, data } = useSession();
@@ -12,7 +11,7 @@ export default function RootPage(props) {
     <>
       {status === "authenticated" ? (
         <>
-          <Dashboard>
+          <Dashboard user_data={props.user_data}>
             <HomePage
               user_data={props.user_data}
               professional_data={props.professional_profile}
@@ -26,6 +25,8 @@ export default function RootPage(props) {
     </>
   );
 }
+
+RootPage.getLayout = false;
 
 export async function getServerSideProps(context) {
   let user_data;
@@ -41,7 +42,7 @@ export async function getServerSideProps(context) {
 
     const professional_profile = await prisma.ProfessionalProfile.findUnique({
       where: {
-        user_id: user_data.id,
+        user_id: user_data?.id,
       },
 
       include: {
@@ -54,7 +55,7 @@ export async function getServerSideProps(context) {
 
     const personal_profile = await prisma.PersonalProfile.findUnique({
       where: {
-        user_id: user_data.id,
+        user_id: user_data?.id,
       },
     });
 

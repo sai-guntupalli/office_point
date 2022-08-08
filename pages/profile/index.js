@@ -7,15 +7,14 @@ import ProfessionalProfile from "../../components/pages/profile/professional_pro
 const ProfilePage = (props) => {
   return (
     <>
-      <Dashboard>
-        <ProfessionalProfile
-          professional_profile={props?.professional_profile}
-        />
-        <ProfileDisplay
-          personal_profile={props?.personal_profile}
-          address={props?.address}
-        />
-      </Dashboard>
+      <ProfessionalProfile
+        user_info={props?.user_data}
+        professional_profile={props?.professional_profile}
+      />
+      <ProfileDisplay
+        personal_profile={props?.personal_profile}
+        address={props?.address}
+      />
     </>
   );
 };
@@ -32,11 +31,14 @@ export async function getServerSideProps(context) {
       where: {
         email: session?.user?.email,
       },
+      // include: {
+      //   manager: true,
+      // },
     });
 
     const professional_profile = await prisma.ProfessionalProfile.findUnique({
       where: {
-        user_id: user_data.id,
+        user_id: user_data?.id,
       },
 
       include: {
@@ -55,7 +57,7 @@ export async function getServerSideProps(context) {
 
     const personal_profile = await prisma.PersonalProfile.findUnique({
       where: {
-        user_id: user_data.id,
+        user_id: user_data?.id,
       },
     });
 

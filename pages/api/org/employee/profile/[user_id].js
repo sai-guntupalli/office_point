@@ -1,24 +1,35 @@
 import prisma from "../../../../../lib/prisma";
 
 const handler = async (req, res) => {
-  console.log("indide emp api");
+  console.log("inside emp api");
   const user_id = req?.query?.user_id;
   if (req.method === "POST") {
     const { body } = req;
+
+    console.log("received body", body);
     const requestedInfo = body.requestedInfo;
 
     let user_update_res;
 
     if (requestedInfo === "professional") {
-      const empId = body.empId;
-      const email = body.email;
-      const mobile = body.mobile;
-      const designation = body.designation;
+      // const empId = body.empId;
+      // const email = body.email;
+      // const mobile = body.mobile;
+      const emp_designation = body.designation;
       const dept = body.dept;
-      const manager = body.manager;
+      // const manager = body.manager;
       const workLoc = body.workLoc;
       const project = body.project;
       const dateOfJoin = body.dateOfJoin;
+
+      // const user_id_update_res = await prisma.User.update({
+      //   where: {
+      //     id: user_id,
+      //   },
+      //   data: {
+      //     id: empId,
+      //   },
+      // });
 
       const professional_profile_update =
         await prisma.ProfessionalProfile.upsert({
@@ -26,12 +37,9 @@ const handler = async (req, res) => {
             user_id: user_id,
           },
           update: {
-            emp_id: empId,
-            mobile: mobile,
-            email: email,
             date_of_join: dateOfJoin,
             designation: {
-              connect: { designation: designation },
+              connect: { designation: emp_designation },
             },
             department: {
               connect: { dept: dept },
@@ -39,7 +47,7 @@ const handler = async (req, res) => {
             project: {
               connect: { project_name: project },
             },
-            manager: manager,
+            // manager: manager,
             work_location: {
               connect: { location: workLoc },
             },
@@ -48,12 +56,11 @@ const handler = async (req, res) => {
             user: {
               connect: { id: user_id },
             },
-            emp_id: empId,
-            mobile: mobile,
-            email: email,
+            // emp_id: empId,
+
             date_of_join: dateOfJoin,
             designation: {
-              connect: { designation: designation },
+              connect: { designation: emp_designation },
             },
             department: {
               connect: { dept: dept },
@@ -61,7 +68,7 @@ const handler = async (req, res) => {
             project: {
               connect: { project_name: project },
             },
-            manager: manager,
+            // manager: manager,
             work_location: {
               connect: { location: workLoc },
             },
@@ -153,13 +160,17 @@ const handler = async (req, res) => {
 
     return res.status(200).json(user_update_res);
   } else if (req.method === "GET") {
-    // const user_data = await prisma.User.findUnique({
-    //   where: {
-    //     id: user_id,
-    //   },
-    // });
+    const user_profile = await prisma.User.findUnique({
+      where: {
+        id: user_id,
+      },
+      // include: {
+      //   PersonalProfile: true,
+      //   ProfessionalProfile: true,
+      // },
+    });
 
-    const user_profile = await prisma.ProfessionalProfile.findUnique({
+    const professional_profile = await prisma.ProfessionalProfile.findUnique({
       where: {
         user_id: user_id,
       },
@@ -171,7 +182,12 @@ const handler = async (req, res) => {
       },
     });
 
-    return res.status(200).json(user_profile);
+    const result_json = {
+      user_profile: user_profile,
+      professional_profile: professional_profile,
+    };
+
+    return res.status(200).json(result_json);
   }
   res.end();
 };

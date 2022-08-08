@@ -20,14 +20,14 @@ function classNames(status) {
 
 function LeaveHistory(props) {
   const [leaves, setLeaves] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [leaveType, setLeaveType] = useState("all");
   const [leaveStatus, setLeaveStatus] = useState("all");
 
   useEffect(() => {
     setLoading(true);
     fetch(
-      `/api/org/employee/leave_request/${props?.user_data?.id}&${leaveType}&${leaveStatus}`
+      `/api/org/employee/leaves/${props?.user_data?.id}&${leaveType}&${leaveStatus}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -40,11 +40,11 @@ function LeaveHistory(props) {
     <>
       <div className="">
         <div className="">
-          <div class="grid grid-cols-6 gap-6 mt-4">
-            <div class="col-span-6 sm:col-span-3 ">
+          <div className="grid grid-cols-6 gap-6 mt-4">
+            <div className="col-span-6 sm:col-span-3 ">
               <label
-                for="country"
-                class="block text-sm font-medium text-gray-700"
+                htmlFor="country"
+                className="block text-sm font-medium text-gray-700"
               >
                 Leave Type
               </label>
@@ -52,9 +52,9 @@ function LeaveHistory(props) {
                 onChange={(e) => setLeaveType(e.target.value)}
                 id="leave_type"
                 name="leave_type"
-                autocomplete="leave_type"
+                autoComplete="leave_type"
                 // ref={leaveTypeRef}
-                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
+                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
               >
                 <option value="all">All Types</option>
                 <option value="sick">Sick Leave</option>
@@ -64,10 +64,10 @@ function LeaveHistory(props) {
                 <option value="other">Other</option>
               </select>
             </div>
-            <div class="col-span-6 sm:col-span-3 ">
+            <div className="col-span-6 sm:col-span-3 ">
               <label
-                for="country"
-                class="block text-sm font-medium text-gray-700"
+                htmlFor="country"
+                className="block text-sm font-medium text-gray-700"
               >
                 Leave Status
               </label>
@@ -75,9 +75,9 @@ function LeaveHistory(props) {
                 onChange={(e) => setLeaveStatus(e.target.value)}
                 id="leave_type"
                 name="leave_type"
-                autocomplete="leave_type"
+                autoComplete="leave_type"
                 // ref={leaveTypeRef}
-                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
+                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
               >
                 <option value="all">All Leaves</option>
                 <option value="approved">Approved Leaves</option>
@@ -97,7 +97,7 @@ function LeaveHistory(props) {
                       <tr>
                         <th
                           scope="col"
-                          className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
+                          className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
                         >
                           Start Date
                         </th>

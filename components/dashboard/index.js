@@ -1,50 +1,32 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
-  ClockIcon,
   CogIcon,
-  CreditCardIcon,
-  DocumentReportIcon,
-  HomeIcon,
   MenuAlt1Icon,
   QuestionMarkCircleIcon,
-  ScaleIcon,
   ShieldCheckIcon,
-  UserGroupIcon,
   XIcon,
 } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { signOut } from "next-auth/react";
-import { Fragment, useState } from "react";
-
-import { useSession } from "next-auth/react";
-
-import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { Fragment, useState } from "react";
 import Breadcrumbs from "../individual/bread_crumbs";
+import AdminSidebar from "./admin_sidebar";
+import CommonSidebar from "./common_sidebar";
 
-const navigation = [
-  { name: "Home", href: "/", icon: HomeIcon },
-  { name: "Leave Management", href: "/lms", icon: ClockIcon },
-  { name: "TimeSheet", href: "/timesheet", icon: ScaleIcon },
-  { name: "Paybook", href: "/paybook", icon: CreditCardIcon },
-  {
-    name: "Documents",
-    href: "/documents",
-    icon: UserGroupIcon,
-  },
-  {
-    name: "Reports",
-    href: "/reports",
-    icon: DocumentReportIcon,
-  },
-  {
-    name: "Add Employee",
-    href: "/add_employee",
-    icon: UserGroupIcon,
-  },
-];
+import { getCookie } from "cookies-next";
+// import { decryptData } from "../lib/encrypt";
+import { decryptObj } from "../../lib/encrypt";
+
 const secondaryNavigation = [
   { name: "Profile", href: "/profile", icon: QuestionMarkCircleIcon },
+  { name: "Settings", href: "/settings", icon: CogIcon },
+  { name: "Privacy", href: "/privacy", icon: ShieldCheckIcon },
+];
+
+const adminNavigation = [
+  { name: "Management", href: "/profile", icon: QuestionMarkCircleIcon },
   { name: "Settings", href: "/settings", icon: CogIcon },
   { name: "Privacy", href: "/privacy", icon: ShieldCheckIcon },
 ];
@@ -62,11 +44,16 @@ function classNames(...classes) {
 export default function Dashboard(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { status, data } = useSession();
-  // console.log("data from Session", data);
+  const user_data = props?.user_data;
+  // console.log("user data from DB", user_data);
+  let user_role = "user";
+  user_role = user_data?.role;
   const router = useRouter();
   const current_page = router.pathname;
 
-  console.log("current_page", current_page);
+  // const user_data_dec = decryptObj(getCookie("user_data"));
+
+  // user_role = user_data_dec?.role;
 
   return (
     <>
@@ -134,34 +121,13 @@ export default function Dashboard(props) {
                     className="mt-5 flex-shrink-0 h-full divide-y divide-cyan-800 overflow-y-auto"
                     aria-label="Sidebar"
                   >
-                    <div className="px-2 space-y-1">
-                      {navigation.map((item) => (
-                        // <a href={item.href}></a>
-                        <Link href={item.href}>
-                          <a
-                            key={item.name}
-                            className={classNames(
-                              item.href === current_page
-                                ? "bg-cyan-800 text-white"
-                                : "text-cyan-100 hover:text-white hover:bg-cyan-600",
-                              "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            <item.icon
-                              className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200"
-                              aria-hidden="true"
-                            />
-                            {item.name}
-                          </a>
-                        </Link>
-                      ))}
-                    </div>
+                    <CommonSidebar />
+                    {user_role === "admin" ? <AdminSidebar /> : <></>}
                     <div className="mt-6 pt-6">
                       <div className="px-2 space-y-1">
                         {secondaryNavigation.map((item) => (
                           // <a href={item.href}>{item.name}</a>
-                          <Link href={item.href}>
+                          <Link href={item.href} key={item.name}>
                             <a
                               key={item.name}
                               className={classNames(
@@ -209,32 +175,13 @@ export default function Dashboard(props) {
               className="mt-5 flex-1 flex flex-col divide-y divide-cyan-800 overflow-y-auto"
               aria-label="Sidebar"
             >
-              <div className="px-2 space-y-1">
-                {navigation.map((item) => (
-                  <Link href={item.href}>
-                    <a
-                      key={item.name}
-                      className={classNames(
-                        item.href === current_page
-                          ? "bg-cyan-800 text-white"
-                          : "text-cyan-100 hover:text-white hover:bg-cyan-600",
-                        "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      <item.icon
-                        className="mr-4 flex-shrink-0 h-6 w-6 text-cyan-200"
-                        aria-hidden="true"
-                      />
-                      {item.name}
-                    </a>
-                  </Link>
-                ))}
-              </div>
+              <CommonSidebar />
+              {user_role === "admin" ? <AdminSidebar /> : <></>}
+
               <div className="mt-6 pt-6">
                 <div className="px-2 space-y-1">
                   {secondaryNavigation.map((item) => (
-                    <Link href={item.href}>
+                    <Link href={item.href} key={item.name}>
                       <a
                         key={item.name}
                         className={classNames(

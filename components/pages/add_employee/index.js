@@ -1,56 +1,70 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
+import DatePicker from "react-datepicker";
+
+import { useEffect } from "react";
+
+function getDateStr(dateObj) {
+  const dateTimeInParts = dateObj.toISOString().split("T");
+  return dateTimeInParts[0];
+}
 
 function AddEmployee(props) {
-  console.log("props ", props);
+  const [empUniqueId, setEmpUniqueId] = useState();
+  const [isLoading, setLoading] = useState(false);
+  // const [empData, setEmpData] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [selectedDept, setSelectedDept] = useState("Big Data");
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch(`/api/org/employee/profile/${empUniqueId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setEmpData(data);
+  //       setLoading(false);
+  //       setSelectedDept(empData?.professional_profile?.department?.dept);
+  //       ``;
+  //     });
+  // }, [empUniqueId]);
+
   const router = useRouter();
 
   const empUserIdRef = useRef();
-  const empIdRef = useRef();
-  const emailRef = useRef();
-  const mobileRef = useRef();
+  // const empIdRef = useRef();
+  // const emailRef = useRef();
+  // const mobileRef = useRef();
   const designationRef = useRef();
   const deptRef = useRef();
-  const managerRef = useRef();
   const workLocRef = useRef();
   const projectRef = useRef();
-  const dateOfJoinRef = useRef();
-
-  const [selectedDept, setSelectedDept] = useState("Big Data");
 
   const changeSelectOptionHandler = (event) => {
     setSelectedDept(event.target.value);
   };
 
-  console.log("selectedDept", selectedDept);
-
   function submitFormHandler(event) {
     event.preventDefault();
-    console.log("inside submitFormHandler", event);
 
     const enteredUserId = empUserIdRef.current.value;
-    const enteredEmpId = empIdRef.current.value;
-    const enteredEmail = emailRef.current.value;
-    const enteredMobile = mobileRef.current.value;
+    // const enteredEmpId = empIdRef.current.value;
+    // const enteredEmail = emailRef.current.value;
+    // const enteredMobile = mobileRef.current.value;
     const enteredDesignation = designationRef.current.value;
     const enteredDept = deptRef.current.value;
-    const enteredManager = managerRef.current.value;
     const enteredWorkLoc = workLocRef.current.value;
     const enteredProject = projectRef.current.value;
-    const enteredDOF = dateOfJoinRef.current.value;
+    const enteredDOF = startDate;
 
     const reqBody = {
       requestedInfo: "professional",
       empUserId: enteredUserId,
-      empId: enteredEmpId,
-      email: enteredEmail,
-      mobile: enteredMobile,
+
       designation: enteredDesignation,
       dept: enteredDept,
-      manager: enteredManager,
       workLoc: enteredWorkLoc,
       project: enteredProject,
-      dateOfJoin: enteredDOF,
+      dateOfJoin: getDateStr(enteredDOF),
     };
 
     console.log("reqBody", reqBody);
@@ -80,7 +94,7 @@ function AddEmployee(props) {
           <div className="pt-2">
             <div>
               <h3 className="text-xl leading-6 font-medium text-gray-900">
-                Employee Information
+                Update Employee Information
               </h3>
               <p className="mt-1 text-sm text-gray-500">
                 Provide details of the Employee.
@@ -101,6 +115,7 @@ function AddEmployee(props) {
                     autoComplete="emp-user-id"
                     className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={empUserIdRef}
+                    onChange={(e) => setEmpUniqueId(e.target.value)}
                   >
                     {props.users.map((user) => {
                       return <option>{user.id}</option>;
@@ -109,45 +124,22 @@ function AddEmployee(props) {
                 </div>
               </div>
 
-              <div className="sm:col-span-1">
-                <label
-                  htmlFor="emp-id"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Employee Id
-                </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    name="emp-id"
-                    id="emp-id"
-                    autoComplete="family-name"
-                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md placeholder-opacity-40  "
-                    ref={empIdRef}
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-1">
+              <div className="sm:col-span-2">
                 <label
                   htmlFor="reports-to"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Date Of Join
                 </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    name="date-of-join"
-                    id="date-of-join"
-                    autoComplete="date-of-join"
-                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    ref={dateOfJoinRef}
-                  />
-                </div>
-              </div>
 
-              <div className="sm:col-span-3">
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  dateFormat="dd-MM-yyyy"
+                  className="focus:ring-cyan-500"
+                />
+              </div>
+              {/* <div className="sm:col-span-3">
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
@@ -165,7 +157,6 @@ function AddEmployee(props) {
                   />
                 </div>
               </div>
-
               <div className="sm:col-span-3">
                 <label
                   htmlFor="mobile-num"
@@ -183,8 +174,7 @@ function AddEmployee(props) {
                     ref={mobileRef}
                   />
                 </div>
-              </div>
-
+              </div> */}
               <div className="sm:col-span-3">
                 <label
                   htmlFor="designation"
@@ -196,35 +186,14 @@ function AddEmployee(props) {
                   <select
                     id="designation"
                     name="designation"
-                    autoComplete="designation"
+                    // autoComplete="designation"
                     className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={designationRef}
-                    // value="SE"
-                    // disabled
                   >
-                    {props.designations.map((des) => {
+                    {props?.designations?.map((des) => {
                       return <option>{des.designation}</option>;
                     })}
                   </select>
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="reports-to"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Manager
-                </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    name="reports-to"
-                    id="reports-to"
-                    autoComplete="reports-to"
-                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    ref={managerRef}
-                  />
                 </div>
               </div>
 
@@ -244,13 +213,12 @@ function AddEmployee(props) {
                     onChange={changeSelectOptionHandler}
                     ref={deptRef}
                   >
-                    {props.departments.map((dep) => {
-                      return <option value={dep.dept}>{dep.dept}</option>;
+                    {props?.departments?.map((dep) => {
+                      return <option value={dep?.dept}>{dep?.dept}</option>;
                     })}
                   </select>
                 </div>
               </div>
-
               <div className="sm:col-span-2">
                 <label
                   htmlFor="project"
@@ -265,6 +233,10 @@ function AddEmployee(props) {
                     autoComplete="project"
                     className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={projectRef}
+                    defaultValue={
+                      props?.empData?.professional_profile?.project
+                        ?.project_name
+                    }
                   >
                     {props.projects.map((proj) => {
                       if (selectedDept) {
@@ -301,8 +273,16 @@ function AddEmployee(props) {
                     autoComplete="country-name"
                     className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     ref={workLocRef}
+                    defaultValue={{
+                      label:
+                        props?.empData?.professional_profile?.work_location
+                          ?.location,
+                      value:
+                        props?.empData?.professional_profile?.work_location
+                          ?.location,
+                    }}
                   >
-                    {props.locations.map((loc) => {
+                    {props?.locations?.map((loc) => {
                       return (
                         <option value={loc.location}>{loc.location}</option>
                       );
@@ -323,7 +303,7 @@ function AddEmployee(props) {
               Cancel
             </button> */}
             <button className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
-              Add Employee
+              Update Employee Data
             </button>
           </div>
         </div>

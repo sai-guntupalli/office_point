@@ -1,7 +1,6 @@
-import { PaperClipIcon } from "@heroicons/react/solid";
-
 export default function ProfessionalProfile(props) {
-  const professional_info = props.professional_profile;
+  const professional_info = props?.professional_profile;
+  const user_info = props?.user_info;
   return (
     <>
       <div className="bg-white overflow-hidden sm:rounded-lg shadow-xl">
@@ -15,7 +14,7 @@ export default function ProfessionalProfile(props) {
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500">Employee Id</dt>
               <dd className=" text-sm text-gray-900">
-                {professional_info?.emp_id}
+                {professional_info?.user_id}
               </dd>
             </div>
             <div className="sm:col-span-1">
@@ -24,7 +23,7 @@ export default function ProfessionalProfile(props) {
                 {professional_info?.designation.designation}
               </dd>
             </div>
-            <div className="sm:col-span-1">
+            {/* <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500">
                 Mobile Number
               </dt>
@@ -39,7 +38,7 @@ export default function ProfessionalProfile(props) {
               <dd className="text-sm text-gray-900">
                 {professional_info?.email}
               </dd>
-            </div>
+            </div> */}
 
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500">Department</dt>
@@ -51,7 +50,7 @@ export default function ProfessionalProfile(props) {
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500">Manager</dt>
               <dd className="text-sm text-gray-900">
-                {professional_info?.manager}
+                {user_info?.manager?.name}
               </dd>
             </div>
 

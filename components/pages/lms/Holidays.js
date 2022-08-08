@@ -1,9 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
-import BangloreHolidays from "./holidays/banglore";
-import HydHolidays from "./holidays/hyderabad";
-import NoidaHolidays from "./holidays/noida";
-import usaHolidays from "./holidays/usa";
 import { useState } from "react";
+import AddHolidayModal from "./AddHolidayModal";
+import { useEffect } from "react";
 
 function isFutureDate(value) {
   const d_now = new Date();
@@ -12,7 +10,10 @@ function isFutureDate(value) {
 }
 
 function getDayOfWeek(date) {
-  const dayOfWeek = new Date(date).getDay();
+  let dayOfWeek = new Date(date).getDay();
+  if (dayOfWeek == 6) {
+    dayOfWeek = -1;
+  }
   return isNaN(dayOfWeek)
     ? null
     : [
@@ -26,29 +27,27 @@ function getDayOfWeek(date) {
       ][dayOfWeek + 1];
 }
 
-export default function Holidays() {
-  const [loc, setLoc] = useState("Hyderabad");
-  const [isChecked, setCheckbox] = useState(true);
+export default function Holidays(props) {
+  let user_role = "user";
+  user_role = props?.user_data?.role;
 
-  let holidaysObj = BangloreHolidays;
-
-  switch (loc) {
-    case "Banglore":
-      holidaysObj = BangloreHolidays;
-      break;
-    case "Hyderabad":
-      holidaysObj = HydHolidays;
-      break;
-    case "Noida":
-      holidaysObj = NoidaHolidays;
-      break;
-    case "USA":
-      holidaysObj = usaHolidays;
-      break;
-    default:
-      holidaysObj = BangloreHolidays;
-      break;
+  let work_loc = props?.work_loc;
+  if (work_loc === null) {
+    work_loc = "Banglore";
   }
+
+  const [loc, setLoc] = useState(work_loc);
+  const [isChecked, setCheckbox] = useState(true);
+  const [holidays, setHolidays] = useState();
+
+  useEffect(() => {
+    // setLoading(true);
+    fetch(`/api/org/admin/holidays/${loc}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setHolidays(data);
+      });
+  }, [loc]);
 
   return (
     <div className=" ">
@@ -65,7 +64,7 @@ export default function Holidays() {
             id="location"
             name="location"
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
-            defaultValue="Hyderabad"
+            defaultValue={work_loc}
             onChange={(e) => setLoc(e.target.value)}
           >
             <option value="Banglore">Banglore</option>
@@ -88,6 +87,7 @@ export default function Holidays() {
             className="ml-4 p-2 focus:ring-cyan-500 h-4 w-4 text-cyan-600 border-cyan-300 rounded"
           />
         </div>
+        {user_role === "admin" ? <AddHolidayModal /> : <></>}
       </div>
       <div className="mt-8 flex flex-col">
         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -117,31 +117,31 @@ export default function Holidays() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {holidaysObj.flatMap((holiday) =>
+                  {holidays?.flatMap((holiday) =>
                     isChecked ? (
-                      isFutureDate(holiday.Date) ? (
+                      isFutureDate(holiday.date) ? (
                         <tr key={holiday._id}>
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                            {holiday.Date}
+                            {holiday.date}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm">
-                            {getDayOfWeek(holiday.Date)}
+                            {getDayOfWeek(holiday.date)}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm ">
-                            {holiday.Name}
+                            {holiday.description}
                           </td>
                         </tr>
                       ) : null
                     ) : (
                       <tr key={holiday._id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {holiday.Date}
+                          {holiday.date}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm">
-                          {getDayOfWeek(holiday.Date)}
+                          {getDayOfWeek(holiday.date)}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm ">
-                          {holiday.Name}
+                          {holiday.description}
                         </td>
                       </tr>
                     )

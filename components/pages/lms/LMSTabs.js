@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-let tabs = [
-  { name: "Holidays", href: "/lms", current: true },
-  { name: "Apply For Leave", href: "/lms/apply_leave", current: false },
-  { name: "Leave History", href: "/lms/leave_history", current: false },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -15,23 +9,25 @@ export default function LMSTabs(props) {
   const router = useRouter();
   const current_page = router.pathname;
 
+  let tabs;
+
   if (current_page === "/lms/apply_leave") {
     tabs = [
-      { name: "Holidays", href: "/lms", current: false },
+      { name: "Leave History", href: "/lms", current: false },
       { name: "Apply For Leave", href: "/lms/apply_leave", current: true },
-      { name: "Leave History", href: "/lms/leave_history", current: false },
+      { name: "Holidays", href: "/lms/holidays", current: false },
     ];
-  } else if (current_page === "/lms/leave_history") {
+  } else if (current_page === "/lms/holidays") {
     tabs = [
-      { name: "Holidays", href: "/lms", current: false },
+      { name: "Leave History", href: "/lms", current: false },
       { name: "Apply For Leave", href: "/lms/apply_leave", current: false },
-      { name: "Leave History", href: "/lms/leave_history", current: true },
+      { name: "Holidays", href: "/lms/holidays", current: true },
     ];
   } else {
     tabs = [
-      { name: "Holidays", href: "/lms", current: true },
+      { name: "Leave History", href: "/lms", current: true },
       { name: "Apply For Leave", href: "/lms/apply_leave", current: false },
-      { name: "Leave History", href: "/lms/leave_history", current: false },
+      { name: "Holidays", href: "/lms/holidays", current: false },
     ];
   }
 
@@ -57,7 +53,7 @@ export default function LMSTabs(props) {
           <div className="hidden sm:block">
             <nav className="-mb-px flex space-x-8">
               {tabs.map((tab) => (
-                <Link href={tab.href}>
+                <Link href={tab.href} key={tab.name}>
                   <a
                     key={tab.name}
                     className={classNames(

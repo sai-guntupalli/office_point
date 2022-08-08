@@ -6,13 +6,11 @@ import prisma from "../../../lib/prisma";
 const ProfilePageUpdate = (props) => {
   return (
     <>
-      <Dashboard>
-        <ProfileForm
-          personal_profile={props?.personal_profile}
-          user_profile={props?.user_data}
-          address={props?.address}
-        />
-      </Dashboard>
+      <ProfileForm
+        personal_profile={props?.personal_profile}
+        user_profile={props?.user_data}
+        address={props?.address}
+      />
     </>
   );
 };

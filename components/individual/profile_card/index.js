@@ -24,10 +24,12 @@ export default function ProfileCard({ professional_data, personal_data }) {
                       Welcome back,
                     </p>
                     <p className="text-xl font-bold text-gray-900 sm:text-2xl">
-                      {personal_data.first_name + " " + personal_data.last_name}
+                      {personal_data?.first_name +
+                        " " +
+                        personal_data?.last_name}
                     </p>
                     <p className="text-sm font-medium text-gray-600">
-                      {professional_data.designation.desination}
+                      {professional_data?.designation?.desination}
                     </p>
                   </div>
                 </div>

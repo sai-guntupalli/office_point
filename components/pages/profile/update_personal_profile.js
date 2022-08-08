@@ -1,9 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
+import DatePicker from "react-datepicker";
 
 export default function ProfileForm(props) {
   //   const personal_info = props.personal_profile;
   const personal_info = props?.personal_profile;
+  const [dob, setDob] = useState(new Date());
+
   const router = useRouter();
 
   // const user_info = props?.user_profile;
@@ -85,7 +88,7 @@ export default function ProfileForm(props) {
                 </p>
               </div>
               <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-2">
                   <label
                     htmlFor="first-name"
                     className="block text-sm font-medium text-gray-700"
@@ -112,7 +115,7 @@ export default function ProfileForm(props) {
                   </div>
                 </div>
 
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-2">
                   <label
                     htmlFor="last-name"
                     className="block text-sm font-medium text-gray-700"
@@ -135,6 +138,22 @@ export default function ProfileForm(props) {
                       ref={lNameRef}
                     />
                   </div>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="reports-to"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Date Of Birth
+                  </label>
+
+                  <DatePicker
+                    selected={dob}
+                    onChange={(date) => setDob(date)}
+                    dateFormat="dd-MM-yyyy"
+                    className="focus:ring-cyan-500"
+                  />
                 </div>
 
                 <div className="sm:col-span-3">
@@ -319,7 +338,7 @@ export default function ProfileForm(props) {
                       <option value={"India"}>India</option>
                       <option value={"USA"}>United States</option>
                       <option value={"Canada"}>Canada</option>
-                      <option value={"Canada"}>Japan</option>
+                      <option value={"Japan"}>Japan</option>
                     </select>
                   </div>
                 </div>

@@ -6,6 +6,11 @@ const handler = async (req, res) => {
   const leave_type = user_id_raw.split("&")[1];
   const leave_status = user_id_raw.split("&")[2];
 
+  console.log("user_id_raw", user_id_raw);
+  console.log("leave_type", leave_type);
+  console.log("user_id", user_id);
+  console.log("leave_status", leave_status);
+
   if (req.method === "POST") {
     const { body } = req;
 
@@ -44,16 +49,16 @@ const handler = async (req, res) => {
       data: leaveObj,
     });
 
-    user_update_res = await prisma.User.update({
-      where: {
-        id: user_id,
-      },
-      data: {
-        leave_profile_id: leave_profile_status.id,
-      },
-    });
+    // user_update_res = await prisma.User.update({
+    //   where: {
+    //     id: user_id,
+    //   },
+    //   data: {
+    //     leave_profile_id: leave_profile_status?.id,
+    //   },
+    // });
 
-    return res.status(200).json(user_update_res);
+    return res.status(200).json(leave_insert_res);
   } else if (req.method === "GET") {
     const leave_profile = await prisma.LeaveProfile.findUnique({
       where: {
@@ -61,33 +66,33 @@ const handler = async (req, res) => {
       },
     });
 
-    let whereCond = { leave_profile_id: leave_profile.id };
+    let whereCond = { leave_profile_id: leave_profile?.id };
 
     if (leave_type !== "all" && leave_status !== "all") {
       whereCond = {
-        leave_profile_id: leave_profile.id,
+        leave_profile_id: leave_profile?.id,
         leave_type: leave_type,
         status: leave_status,
       };
     } else if (leave_type !== "all" && leave_status === "all") {
       whereCond = {
-        leave_profile_id: leave_profile.id,
+        leave_profile_id: leave_profile?.id,
         leave_type: leave_type,
       };
     } else if (leave_type === "all" && leave_status !== "all") {
       whereCond = {
-        leave_profile_id: leave_profile.id,
+        leave_profile_id: leave_profile?.id,
         status: leave_status,
       };
     } else {
-      whereCond = { leave_profile_id: leave_profile.id };
+      whereCond = { leave_profile_id: leave_profile?.id };
     }
 
     const leaves = await prisma.Leave.findMany({
       where: whereCond,
       orderBy: [
         {
-          id: "desc",
+          start_date: "asc",
         },
       ],
     });
