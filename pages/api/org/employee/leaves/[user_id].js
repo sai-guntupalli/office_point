@@ -6,15 +6,8 @@ const handler = async (req, res) => {
   const leave_type = user_id_raw.split("&")[1];
   const leave_status = user_id_raw.split("&")[2];
 
-  console.log("user_id_raw", user_id_raw);
-  console.log("leave_type", leave_type);
-  console.log("user_id", user_id);
-  console.log("leave_status", leave_status);
-
   if (req.method === "POST") {
     const { body } = req;
-
-    let user_update_res;
 
     const startDate = body.startDate;
     const endDate = body.endDate;
@@ -97,7 +90,6 @@ const handler = async (req, res) => {
       ],
     });
 
-    // console.log(leaves);
     return res.status(200).json(leaves);
   }
   res.end();

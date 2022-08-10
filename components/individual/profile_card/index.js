@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 export default function ProfileCard({ professional_data, personal_data }) {
+  console.log("professional_data", professional_data);
   return (
     <>
       {personal_data !== null ? (
@@ -29,7 +30,7 @@ export default function ProfileCard({ professional_data, personal_data }) {
                         personal_data?.last_name}
                     </p>
                     <p className="text-sm font-medium text-gray-600">
-                      {professional_data?.designation?.desination}
+                      {professional_data?.designation?.designation}
                     </p>
                   </div>
                 </div>

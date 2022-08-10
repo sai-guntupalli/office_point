@@ -1,17 +1,14 @@
 import "../styles/globals.css";
-import Script from "next/script";
 import { SessionProvider } from "next-auth/react";
 import AuthWrapper from "../components/auth/AuthWrapper";
 import "react-datepicker/dist/react-datepicker.css";
 import Dashboard from "../components/dashboard";
 import { setCookie } from "cookies-next";
 import { encryptObj } from "../lib/encrypt";
-// import "tw-elements";
 
 function MyApp({ Component, pageProps }) {
   // setCookie("user_data", encryptObj(pageProps.user_data), { secure: true });
   const applyLayout = Component?.getLayout;
-  // console.log("getLayout", getLayout);
   {
     const LayoutPage =
       applyLayout === false ? (

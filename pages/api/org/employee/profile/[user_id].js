@@ -1,35 +1,18 @@
 import prisma from "../../../../../lib/prisma";
 
 const handler = async (req, res) => {
-  console.log("inside emp api");
   const user_id = req?.query?.user_id;
   if (req.method === "POST") {
     const { body } = req;
-
-    console.log("received body", body);
     const requestedInfo = body.requestedInfo;
-
     let user_update_res;
 
     if (requestedInfo === "professional") {
-      // const empId = body.empId;
-      // const email = body.email;
-      // const mobile = body.mobile;
       const emp_designation = body.designation;
       const dept = body.dept;
-      // const manager = body.manager;
       const workLoc = body.workLoc;
       const project = body.project;
       const dateOfJoin = body.dateOfJoin;
-
-      // const user_id_update_res = await prisma.User.update({
-      //   where: {
-      //     id: user_id,
-      //   },
-      //   data: {
-      //     id: empId,
-      //   },
-      // });
 
       const professional_profile_update =
         await prisma.ProfessionalProfile.upsert({
@@ -56,7 +39,6 @@ const handler = async (req, res) => {
             user: {
               connect: { id: user_id },
             },
-            // emp_id: empId,
 
             date_of_join: dateOfJoin,
             designation: {
@@ -96,6 +78,7 @@ const handler = async (req, res) => {
       const country = body.country;
       const zipcode = body.zipcode;
       const about = body.about;
+      const dob = body.dob;
 
       const address_update_res = await prisma.Address.upsert({
         where: {
@@ -134,6 +117,7 @@ const handler = async (req, res) => {
           personal_email: email,
           personal_mobile: mobile,
           about: about,
+          date_of_birth: dob,
         },
         create: {
           user: {
@@ -144,6 +128,7 @@ const handler = async (req, res) => {
           personal_email: email,
           personal_mobile: mobile,
           about: about,
+          date_of_birth: dob,
         },
       });
 
@@ -164,10 +149,6 @@ const handler = async (req, res) => {
       where: {
         id: user_id,
       },
-      // include: {
-      //   PersonalProfile: true,
-      //   ProfessionalProfile: true,
-      // },
     });
 
     const professional_profile = await prisma.ProfessionalProfile.findUnique({

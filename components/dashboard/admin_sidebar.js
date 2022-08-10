@@ -23,7 +23,7 @@ function AdminSidebar(props) {
     },
     {
       name: "Project Management",
-      href: "/admin/project_management",
+      href: "/admin/pm",
       icon: UserGroupIcon,
     },
     {

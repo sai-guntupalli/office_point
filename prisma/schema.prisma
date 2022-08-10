@@ -141,6 +141,7 @@ model Project {
   client_name  String?
   department   String?
   manager_id   String?
+  start_date   String?
 
   manager User?       @relation(fields: [manager_id], references: [id])
   dept    Department? @relation(fields: [department], references: [dept])

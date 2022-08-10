@@ -2,6 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import DatePicker from "react-datepicker";
 
+function getDateStr(dateObj) {
+  const dateTimeInParts = dateObj.toISOString().split("T");
+  return dateTimeInParts[0];
+}
+
 export default function ProfileForm(props) {
   //   const personal_info = props.personal_profile;
   const personal_info = props?.personal_profile;
@@ -24,6 +29,7 @@ export default function ProfileForm(props) {
   const countryRef = useRef();
   const zipcodeRef = useRef();
   const aboutRef = useRef();
+  // const dobRef = useRef();
 
   function submitFormHandler(event) {
     event.preventDefault();
@@ -55,6 +61,7 @@ export default function ProfileForm(props) {
       country: enteredCountry,
       zipcode: enteredZipcode,
       about: enteredAbout,
+      dob: getDateStr(dob),
     };
 
     fetch(`/api/org/employee/profile/${props?.user_profile?.id}`, {
