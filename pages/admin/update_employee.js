@@ -1,9 +1,9 @@
-import AddEmployee from "../../components/pages/add_employee";
+import AddEmployee from "../../components/pages/profile/add_employee";
 
 import prisma from "../../lib/prisma";
 import { getSession } from "next-auth/react";
 
-const AddEmployeePage = (props) => {
+const UpdateEmployeeData = (props) => {
   const user_role = props?.user_data?.role || "user";
   return (
     <>
@@ -64,4 +64,4 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default AddEmployeePage;
+export default UpdateEmployeeData;

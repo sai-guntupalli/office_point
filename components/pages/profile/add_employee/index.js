@@ -1,8 +1,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import DatePicker from "react-datepicker";
-
-import { useEffect } from "react";
+import Link from "next/link";
 
 function getDateStr(dateObj) {
   const dateTimeInParts = dateObj.toISOString().split("T");
@@ -16,24 +15,9 @@ function AddEmployee(props) {
   const [startDate, setStartDate] = useState(new Date());
   const [selectedDept, setSelectedDept] = useState("Big Data");
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   fetch(`/api/org/employee/profile/${empUniqueId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setEmpData(data);
-  //       setLoading(false);
-  //       setSelectedDept(empData?.professional_profile?.department?.dept);
-  //       ``;
-  //     });
-  // }, [empUniqueId]);
-
   const router = useRouter();
 
   const empUserIdRef = useRef();
-  // const empIdRef = useRef();
-  // const emailRef = useRef();
-  // const mobileRef = useRef();
   const designationRef = useRef();
   const deptRef = useRef();
   const workLocRef = useRef();
@@ -47,9 +31,6 @@ function AddEmployee(props) {
     event.preventDefault();
 
     const enteredUserId = empUserIdRef.current.value;
-    // const enteredEmpId = empIdRef.current.value;
-    // const enteredEmail = emailRef.current.value;
-    // const enteredMobile = mobileRef.current.value;
     const enteredDesignation = designationRef.current.value;
     const enteredDept = deptRef.current.value;
     const enteredWorkLoc = workLocRef.current.value;
@@ -139,42 +120,7 @@ function AddEmployee(props) {
                   className="focus:ring-cyan-500"
                 />
               </div>
-              {/* <div className="sm:col-span-3">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email address
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    ref={emailRef}
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="mobile-num"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Mobile Number
-                </label>
-                <div className="mt-1">
-                  <input
-                    type="text"
-                    name="mobile-num"
-                    id="mobile-num"
-                    autoComplete="family-name"
-                    className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    ref={mobileRef}
-                  />
-                </div>
-              </div> */}
+
               <div className="sm:col-span-3">
                 <label
                   htmlFor="designation"
@@ -296,12 +242,9 @@ function AddEmployee(props) {
 
         <div className="pt-5">
           <div className="flex justify-end">
-            {/* <button
-              type="button"
-              className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-            >
-              Cancel
-            </button> */}
+            <button className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md bg-cyan-600 text-white hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
+              <Link href={"/"}>Cancel</Link>
+            </button>
             <button className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
               Update Employee Data
             </button>

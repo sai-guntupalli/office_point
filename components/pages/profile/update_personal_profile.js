@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import DatePicker from "react-datepicker";
 import Link from "next/link";
@@ -8,7 +8,7 @@ function getDateStr(dateObj) {
   return dateTimeInParts[0];
 }
 
-export default function ProfileForm(props) {
+export default function UpdatePersonalInfo(props) {
   //   const personal_info = props.personal_profile;
   const personal_info = props?.personal_profile;
   const [dob, setDob] = useState(new Date());

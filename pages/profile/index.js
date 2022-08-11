@@ -1,7 +1,7 @@
-import PersonalProfile from "./personal_profile";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
-import ProfessionalProfile from "./professional_profile";
+import ProfessionalProfile from "../../components/pages/profile/professional_profile";
+import PersonalProfile from "../../components/pages/profile/personal_profile";
 
 const ProfilePage = (props) => {
   return (

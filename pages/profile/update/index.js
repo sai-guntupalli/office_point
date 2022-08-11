@@ -1,12 +1,11 @@
-import Dashboard from "../../../components/dashboard";
-import ProfileForm from "../update_personal_profile";
-import { getSession, useSession } from "next-auth/react";
+import UpdatePersonalInfo from "../../../components/pages/profile/update_personal_profile";
+import { getSession } from "next-auth/react";
 import prisma from "../../../lib/prisma";
 
 const ProfilePageUpdate = (props) => {
   return (
     <>
-      <ProfileForm
+      <UpdatePersonalInfo
         personal_profile={props?.personal_profile}
         user_profile={props?.user_data}
         address={props?.address}
