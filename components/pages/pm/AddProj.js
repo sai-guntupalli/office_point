@@ -1,30 +1,29 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
-import Select from "react-select";
-
-import { useEffect } from "react";
-
-function getDateStr(dateObj) {
-  const dateTimeInParts = dateObj.toISOString().split("T");
-  return dateTimeInParts[0];
-}
+import ComboboxComp from "../../individual/combo_box";
 
 function AddProjComp(props) {
   const [selectedDept, setSelectedDept] = useState("Big Data");
-  const [projManager, setProjManager] = useState(null);
+  // const [projManager, setProjManager] = useState(null);
+  const [selectedItem, setSelectedItem] = useState({});
 
   const todaysDate = new Date().toISOString().slice(0, 10);
 
-  const users = props?.users;
+  const users_raw = props?.users;
+  console.log("received raw users", users_raw);
 
-  console.log("projManager", projManager);
+  const users = users_raw?.map(({ id, name }) => ({
+    id: id,
+    name: name + " @" + id,
+  }));
 
+  console.log("received users", users);
   const router = useRouter();
-
   const projNameRef = useRef();
   const clientRef = useRef();
   const deptRef = useRef();
   const startDateRef = useRef();
+  const descRef = useRef();
 
   const changeSelectOptionHandler = (event) => {
     setSelectedDept(event.target.value);
@@ -37,18 +36,16 @@ function AddProjComp(props) {
     const enteredDept = deptRef.current.value;
     const enteredClient = clientRef.current.value;
     const enteredStartDate = startDateRef.current.value;
+    const enteredDesc = descRef.current.value;
 
     const reqBody = {
       proj_name: enteredProjName,
       dept: enteredDept,
       client: enteredClient,
       start_date: enteredStartDate,
-      manager: projManager?.value,
+      manager: selectedItem?.id,
+      desc: enteredDesc,
     };
-
-    console.log("reqBody", reqBody);
-
-    console.log(JSON.stringify(reqBody));
 
     fetch(`/api/org/admin/pm/add_proj`, {
       method: "POST",
@@ -147,7 +144,7 @@ function AddProjComp(props) {
                 </div>
               </div>
 
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="department"
                   className="block text-sm font-medium text-gray-700"
@@ -178,7 +175,7 @@ function AddProjComp(props) {
                   Project Manager
                 </label>
                 <div className="mt-1">
-                  <Select
+                  {/* <Select
                     classlabel="basic-single"
                     classlabelPrefix="select"
                     defaultValue={projManager}
@@ -189,7 +186,29 @@ function AddProjComp(props) {
                     }))}
                     isSearchable={true}
                     onChange={setProjManager}
+                  /> */}
+                  <ComboboxComp
+                    items={users}
+                    selectedItem={selectedItem}
+                    setSelectedItem={setSelectedItem}
                   />
+                </div>
+                {console.log("selected manager outside combo", selectedItem)}
+              </div>
+              <div className="sm:col-span-6">
+                <label
+                  for="message"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Projct Description
+                </label>
+                <div className="mt-1">
+                  <textarea
+                    id="message"
+                    rows="4"
+                    className="block p-2.5 w-full text-sm text-gray-900  rounded-lg border border-gray-300 focus:ring-cyan-500 focus:border-cyan-500  dark:focus:border-cyan-500"
+                    ref={descRef}
+                  ></textarea>
                 </div>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import Dashboard from "../../../components/dashboard";
-import ProfileForm from "../../../components/pages/profile/update_personal_profile";
+import ProfileForm from "../update_personal_profile";
 import { getSession, useSession } from "next-auth/react";
 import prisma from "../../../lib/prisma";
 

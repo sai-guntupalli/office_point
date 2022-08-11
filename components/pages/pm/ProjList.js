@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ExclamationIcon } from "@heroicons/react/solid";
+import Link from "next/link";
 
 function ProjList(props) {
   const [client, setClient] = useState("all");
@@ -104,6 +105,12 @@ function ProjList(props) {
                         >
                           Manager
                         </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
+                        >
+                          Manage
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
@@ -138,6 +145,22 @@ function ProjList(props) {
                             className="whitespace-nowrap px-3 py-4 text-sm text-black-500"
                           >
                             {project.manager_id}
+                          </td>
+                          <td
+                            key={project._id}
+                            className="whitespace-nowrap px-3 py-4 text-sm text-black-500"
+                          >
+                            <button
+                              type="button"
+                              className="inline-flex items-center rounded-md border   px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 disabled:cursor-not-allowed bg-cyan-600 disabled:opacity-30"
+                            >
+                              <Link
+                                key={project.name}
+                                href={`/admin/pm/manage_proj/${project.id}`}
+                              >
+                                Manage
+                              </Link>
+                            </button>
                           </td>
                         </tr>
                       ))}

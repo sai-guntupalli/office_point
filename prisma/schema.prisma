@@ -142,6 +142,7 @@ model Project {
   department   String?
   manager_id   String?
   start_date   String?
+  description  String?
 
   manager User?       @relation(fields: [manager_id], references: [id])
   dept    Department? @relation(fields: [department], references: [dept])

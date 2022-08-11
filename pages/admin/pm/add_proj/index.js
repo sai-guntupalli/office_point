@@ -1,9 +1,7 @@
 import PMTabs from "../../../../components/pages/pm/PMTabs";
 import { getSession } from "next-auth/react";
 import AddProjComp from "../../../../components/pages/pm/AddProj";
-// import SearchBar from "../../../../components/pages/pm/SearchBar";
 import prisma from "../../../../lib/prisma";
-import SearchBar2 from "../../../../components/pages/pm/SearchBar2";
 
 function AddProj(props) {
   return (
@@ -15,7 +13,6 @@ function AddProj(props) {
         clients={props.all_clients}
         user_data={props.user_data}
       />
-      {/* <SearchBar2 /> */}
     </>
   );
 }

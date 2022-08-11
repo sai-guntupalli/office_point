@@ -1,8 +1,7 @@
-import Dashboard from "../../components/dashboard";
-import ProfileDisplay from "../../components/pages/profile/personal_profile";
+import PersonalProfile from "./personal_profile";
 import { getSession, useSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
-import ProfessionalProfile from "../../components/pages/profile/professional_profile";
+import ProfessionalProfile from "./professional_profile";
 
 const ProfilePage = (props) => {
   return (
@@ -10,8 +9,9 @@ const ProfilePage = (props) => {
       <ProfessionalProfile
         user_info={props?.user_data}
         professional_profile={props?.professional_profile}
+        personal_profile={props?.personal_profile}
       />
-      <ProfileDisplay
+      <PersonalProfile
         personal_profile={props?.personal_profile}
         address={props?.address}
       />

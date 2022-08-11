@@ -10,6 +10,7 @@ const handler = async (req, res) => {
       client_name: body?.client,
       start_date: body?.start_date,
       manager: body?.manager,
+      desc: body?.desc,
     };
 
     console.log("received proj", data);
@@ -28,6 +29,7 @@ const handler = async (req, res) => {
         manager: {
           connect: { id: data.manager },
         },
+        description: data.desc,
       },
     });
 

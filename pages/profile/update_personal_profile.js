@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import DatePicker from "react-datepicker";
+import Link from "next/link";
 
 function getDateStr(dateObj) {
   const dateTimeInParts = dateObj.toISOString().split("T");
@@ -370,6 +371,9 @@ export default function ProfileForm(props) {
 
           <div className="pt-5">
             <div className="flex justify-end">
+              <button className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md bg-cyan-600 text-white hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
+                <Link href={"/profile"}>Cancel</Link>
+              </button>
               <button
                 // onClick={getUserDataFromDb()}
                 className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md bg-cyan-600 text-white hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
