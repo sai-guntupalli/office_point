@@ -1,5 +1,7 @@
 import prisma from "../../../../../../lib/prisma";
 
+// Projects API
+
 const handler = async (req, res) => {
   if (req.method === "POST") {
     console.log("inside add_proj post meth");

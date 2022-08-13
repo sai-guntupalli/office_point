@@ -14,6 +14,7 @@ const UpdateEmployeeData = (props) => {
           departments={props.departments}
           projects={props.projects}
           users={props.users}
+          user_data={props.user_data}
         />
       ) : (
         <div>You are NOT Authorised to access thie PAGE! </div>
@@ -29,6 +30,11 @@ export async function getServerSideProps(context) {
 
   if (session) {
     user_data = await prisma.User.findUnique({
+      include: {
+        ProjectProfile: true,
+        Address: true,
+        Project: true,
+      },
       where: {
         email: session?.user?.email,
       },

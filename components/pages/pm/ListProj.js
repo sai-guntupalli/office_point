@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ExclamationIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 
-function ProjList(props) {
+function ListProj(props) {
   const [client, setClient] = useState("all");
   const [isLoading, setLoading] = useState(true);
   const [dept, setDept] = useState("Big Data");
@@ -10,7 +10,7 @@ function ProjList(props) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/org/admin/pm/add_proj/`)
+    fetch(`/api/org/admin/pm/projects/`)
       .then((res) => res.json())
       .then((data) => {
         setProjects(data);
@@ -195,4 +195,4 @@ function ProjList(props) {
   );
 }
 
-export default ProjList;
+export default ListProj;

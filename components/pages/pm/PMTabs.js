@@ -15,9 +15,8 @@ export default function PMTabs(props) {
     tabs = [
       { name: "Dashboard", href: "/admin/pm", current: false },
       { name: "Add Project", href: "/admin/pm/add_proj", current: true },
-      { name: "Manage Project", href: "/admin/pm/manage_proj", current: false },
     ];
-  } else if (current_page === "/admin/pm/manage_proj") {
+  } else if (current_page.includes("/admin/pm/manage_proj")) {
     tabs = [
       { name: "Dashboard", href: "/admin/pm", current: false },
       { name: "Add Project", href: "/admin/pm/add_proj", current: false },
@@ -27,7 +26,6 @@ export default function PMTabs(props) {
     tabs = [
       { name: "Dashboard", href: "/admin/pm", current: true },
       { name: "Add Project", href: "/admin/pm/add_proj", current: false },
-      { name: "Manage Project", href: "/admin/pm/manage_proj", current: false },
     ];
   }
 
@@ -45,14 +43,14 @@ export default function PMTabs(props) {
               className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm rounded-md"
               defaultValue={tabs.find((tab) => tab.current).name}
             >
-              {tabs.map((tab) => (
+              {tabs.flatMap((tab) => (
                 <option key={tab.name}>{tab.name}</option>
               ))}
             </select>
           </div>
           <div className="hidden sm:block">
             <nav className="-mb-px flex space-x-8">
-              {tabs.map((tab) => (
+              {tabs.flatMap((tab) => (
                 <Link href={tab.href} key={tab.name}>
                   <a
                     key={tab.name}

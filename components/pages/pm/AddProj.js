@@ -47,7 +47,7 @@ function AddProjComp(props) {
       desc: enteredDesc,
     };
 
-    fetch(`/api/org/admin/pm/add_proj`, {
+    fetch(`/api/org/admin/pm/projects`, {
       method: "POST",
       body: JSON.stringify(reqBody),
 

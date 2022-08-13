@@ -46,20 +46,19 @@ model User {
   emailVerified           DateTime?
   image                   String?
   role                    String?   @default("user")
-  // manager_id              String?
-  // manager                 User?     @relation("ManagerEmployee", fields: [manager_id], references: [id])
-  // employees               User[]    @relation("ManagerEmployee")
   accounts                Account[]
   sessions                Session[]
   professional_profile_id String?   @unique
   personal_profile_id     String?   @unique
   address_id              String?   @unique
   leave_profile_id        String?   @unique
+  project_profile_id      String?   @unique
 
   PersonalProfile     PersonalProfile?
   ProfessionalProfile ProfessionalProfile?
   Address             Address?
   LeaveProfile        LeaveProfile?
+  ProjectProfile      ProjectProfile[]
   Project             Project[]
   Leave               Leave[]
 }
@@ -98,12 +97,10 @@ model ProfessionalProfile {
   date_of_join    String
   // last_updated_at  DateTime @updatedAt
   department_id   String?
-  project_id      String?
   designation_id  String?
   workLocation_id String?
 
   department    Department?   @relation(fields: [department_id], references: [id])
-  project       Project?      @relation(fields: [project_id], references: [id])
   designation   Designation?  @relation(fields: [designation_id], references: [id])
   work_location WorkLocation? @relation(fields: [workLocation_id], references: [id])
   user          User?         @relation(fields: [user_id], references: [id])
@@ -118,6 +115,19 @@ model LeaveProfile {
 
   user  User?   @relation(fields: [user_id], references: [id])
   Leave Leave[]
+}
+
+model ProjectProfile {
+  id                String  @id @default(cuid())
+  user_id           String
+  project_id        String  @unique
+  project_join_date String?
+  project_exit_date String?
+  role              String?
+  status            String?
+
+  user    User     @relation(fields: [user_id], references: [id])
+  Project Project? @relation(fields: [project_id], references: [id])
 }
 
 model WorkLocation {
@@ -142,13 +152,14 @@ model Project {
   department   String?
   manager_id   String?
   start_date   String?
+  end_date     String?
   description  String?
 
   manager User?       @relation(fields: [manager_id], references: [id])
   dept    Department? @relation(fields: [department], references: [dept])
   client  Client?     @relation(fields: [client_name], references: [name])
 
-  ProfessionalProfile ProfessionalProfile[]
+  ProjectProfile ProjectProfile?
 }
 
 model Client {

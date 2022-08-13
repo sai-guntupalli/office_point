@@ -47,7 +47,6 @@ export async function getServerSideProps(context) {
 
       include: {
         department: true,
-        project: true,
         designation: true,
         work_location: true,
       },

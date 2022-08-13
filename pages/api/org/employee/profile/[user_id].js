@@ -27,9 +27,9 @@ const handler = async (req, res) => {
             department: {
               connect: { dept: dept },
             },
-            project: {
-              connect: { project_name: project },
-            },
+            // project: {
+            //   connect: { project_name: project },
+            // },
             // manager: manager,
             work_location: {
               connect: { location: workLoc },
@@ -47,9 +47,9 @@ const handler = async (req, res) => {
             department: {
               connect: { dept: dept },
             },
-            project: {
-              connect: { project_name: project },
-            },
+            // project: {
+            //   connect: { project_name: project },
+            // },
             // manager: manager,
             work_location: {
               connect: { location: workLoc },
@@ -157,7 +157,6 @@ const handler = async (req, res) => {
       },
       include: {
         department: true,
-        project: true,
         designation: true,
         work_location: true,
       },

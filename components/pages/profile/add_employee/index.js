@@ -15,6 +15,12 @@ function AddEmployee(props) {
   const [startDate, setStartDate] = useState(new Date());
   const [selectedDept, setSelectedDept] = useState("Big Data");
 
+  console.log("props in add emp", props);
+  console.log(
+    "project in emp",
+    props?.empData?.professional_profile?.project?.project_name
+  );
+
   const router = useRouter();
 
   const empUserIdRef = useRef();

@@ -14,7 +14,6 @@ const handler = async (req, res) => {
       },
       include: {
         department: true,
-        project: true,
         designation: true,
         work_location: true,
       },

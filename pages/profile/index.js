@@ -2,6 +2,7 @@ import { getSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 import ProfessionalProfile from "../../components/pages/profile/professional_profile";
 import PersonalProfile from "../../components/pages/profile/personal_profile";
+import ProjectProfile from "../../components/pages/profile/project_profile";
 
 const ProfilePage = (props) => {
   return (
@@ -10,6 +11,10 @@ const ProfilePage = (props) => {
         user_info={props?.user_data}
         professional_profile={props?.professional_profile}
         personal_profile={props?.personal_profile}
+      />
+      <ProjectProfile
+        user_info={props?.user_data}
+        project_profile={props?.project_profile}
       />
       <PersonalProfile
         personal_profile={props?.personal_profile}
@@ -43,9 +48,19 @@ export async function getServerSideProps(context) {
 
       include: {
         department: true,
-        project: true,
         designation: true,
         work_location: true,
+      },
+    });
+
+    const project_profile = await prisma.ProjectProfile.findMany({
+      where: {
+        user_id: user_data?.id,
+        status: "current",
+      },
+
+      include: {
+        Project: true,
       },
     });
 
@@ -66,6 +81,7 @@ export async function getServerSideProps(context) {
         user_data: user_data,
         professional_profile: professional_profile,
         personal_profile: personal_profile,
+        project_profile: project_profile[0],
         address: address,
       },
     };
@@ -75,6 +91,7 @@ export async function getServerSideProps(context) {
         user_data: null,
         professional_profile: null,
         personal_profile: null,
+        project_profile: null,
         address: null,
       },
     };

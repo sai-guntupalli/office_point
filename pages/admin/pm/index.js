@@ -1,12 +1,12 @@
 import PMTabs from "../../../components/pages/pm/PMTabs";
 import { getSession } from "next-auth/react";
-import ProjList from "../../../components/pages/pm/ProjList";
+import ListProj from "../../../components/pages/pm/ListProj";
 
-function ProjectManagement(props) {
+function ProjectsDashboard(props) {
   return (
     <>
       <PMTabs />
-      <ProjList
+      <ListProj
         user_data={props?.user_data}
         clients={props?.clients}
         depts={props?.depts}
@@ -15,7 +15,7 @@ function ProjectManagement(props) {
   );
 }
 
-export default ProjectManagement;
+export default ProjectsDashboard;
 
 export async function getServerSideProps(context) {
   let user_data;
