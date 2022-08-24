@@ -13,7 +13,7 @@ function AddEmployee(props) {
   const [isLoading, setLoading] = useState(false);
   // const [empData, setEmpData] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
-  const [selectedDept, setSelectedDept] = useState("Big Data");
+  const [selectedDept, setSelectedDept] = useState("Bench");
 
   console.log("props in add emp", props);
   console.log(

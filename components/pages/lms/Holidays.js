@@ -53,7 +53,7 @@ export default function Holidays(props) {
     <div className=" ">
       <div className="flex items-center flex-row">
         {/* <div className="sm:flex-auto"> */}
-        <div className="mt-6 basis-1/2">
+        <div className="mt-6  basis-1/4">
           <label
             htmlFor="location"
             className="block text-sm font-medium text-gray-700"
@@ -73,10 +73,7 @@ export default function Holidays(props) {
             <option value="USA">USA</option>
           </select>
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-6 md:ml-20 pt-12 basis-1/2">
-          <span id="comments-description" className="text-gray-500 ">
-            <span> Only show upcoming Holidays</span>
-          </span>
+        <div className="mt-4 sm:mt-0 sm:ml-6 md:ml-20 pt-12">
           <input
             id="comments"
             aria-describedby="comments-description"
@@ -86,8 +83,13 @@ export default function Holidays(props) {
             onChange={(e) => setCheckbox(!isChecked)}
             className="ml-4 p-2 focus:ring-cyan-500 h-4 w-4 text-cyan-600 border-cyan-300 rounded"
           />
+          <span id="comments-description" className="text-gray-500 ">
+            <span> Only show upcoming Holidays</span>
+          </span>
         </div>
-        {user_role === "admin" ? <AddHolidayModal /> : <></>}
+        <div className="mt-8 sm:mt-0 sm:ml-6 md:ml-20 pt-12 ">
+          {user_role === "admin" ? <AddHolidayModal /> : <></>}
+        </div>
       </div>
       <div className="mt-8 flex flex-col">
         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">

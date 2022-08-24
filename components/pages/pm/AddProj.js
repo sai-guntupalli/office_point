@@ -4,20 +4,16 @@ import ComboboxComp from "../../individual/combo_box";
 
 function AddProjComp(props) {
   const [selectedDept, setSelectedDept] = useState("Big Data");
-  // const [projManager, setProjManager] = useState(null);
   const [selectedItem, setSelectedItem] = useState({});
+  // const [apiResponse, setApiResponse] = useState({});
 
   const todaysDate = new Date().toISOString().slice(0, 10);
-
   const users_raw = props?.users;
-  console.log("received raw users", users_raw);
-
   const users = users_raw?.map(({ id, name }) => ({
     id: id,
     name: name + " @" + id,
   }));
 
-  console.log("received users", users);
   const router = useRouter();
   const projNameRef = useRef();
   const clientRef = useRef();
@@ -43,9 +39,17 @@ function AddProjComp(props) {
       dept: enteredDept,
       client: enteredClient,
       start_date: enteredStartDate,
-      manager: selectedItem?.id,
       desc: enteredDesc,
     };
+
+    // const projProfile = {
+    //   manager_id: selectedItem?.id,
+    //   dept: enteredDept,
+    //   client: enteredClient,
+    //   start_date: enteredStartDate,
+    //   manager: selectedItem?.id,
+    //   desc: enteredDesc,
+    // };
 
     fetch(`/api/org/admin/pm/projects`, {
       method: "POST",
@@ -56,7 +60,18 @@ function AddProjComp(props) {
       },
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => setApiResponse(data));
+
+    // fetch(`/api/org/admin/pm/project_profiles`, {
+    //   method: "POST",
+    //   body: JSON.stringify(reqBody),
+
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => console.log(data));
     router.push("/admin/pm");
   }
 
@@ -89,6 +104,7 @@ function AddProjComp(props) {
                     type="text"
                     name="proj_name"
                     id="proj_name"
+                    placeholder="Enter Project Name"
                     className={
                       "shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     }
@@ -98,7 +114,7 @@ function AddProjComp(props) {
                 </div>
               </div>
 
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="client"
                   className="block text-sm font-medium text-gray-700"
@@ -123,7 +139,7 @@ function AddProjComp(props) {
                 </div>
               </div>
 
-              <div className="sm:col-span-1">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="reports-to"
                   className="block text-sm font-medium text-gray-700"
@@ -167,7 +183,7 @@ function AddProjComp(props) {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              {/* <div className="sm:col-span-3">
                 <label
                   htmlFor="manager"
                   className="block text-sm font-medium text-gray-700"
@@ -186,18 +202,18 @@ function AddProjComp(props) {
                     }))}
                     isSearchable={true}
                     onChange={setProjManager}
-                  /> */}
+                  /> 
                   <ComboboxComp
                     items={users}
                     selectedItem={selectedItem}
                     setSelectedItem={setSelectedItem}
                   />
                 </div>
-                {console.log("selected manager outside combo", selectedItem)}
-              </div>
+              </div> */}
+
               <div className="sm:col-span-6">
                 <label
-                  for="message"
+                  htmlFor="message"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Projct Description
@@ -206,6 +222,7 @@ function AddProjComp(props) {
                   <textarea
                     id="message"
                     rows="4"
+                    placeholder="Project Description"
                     className="block p-2.5 w-full text-sm text-gray-900  rounded-lg border border-gray-300 focus:ring-cyan-500 focus:border-cyan-500  dark:focus:border-cyan-500"
                     ref={descRef}
                   ></textarea>

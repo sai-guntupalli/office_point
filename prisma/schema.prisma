@@ -44,7 +44,7 @@ model User {
   name                    String?
   email                   String?   @unique
   emailVerified           DateTime?
-  image                   String?
+  image                   String?   @default("https://picsum.photos/200")
   role                    String?   @default("user")
   accounts                Account[]
   sessions                Session[]
@@ -59,7 +59,6 @@ model User {
   Address             Address?
   LeaveProfile        LeaveProfile?
   ProjectProfile      ProjectProfile[]
-  Project             Project[]
   Leave               Leave[]
 }
 
@@ -76,6 +75,7 @@ model PersonalProfile {
   user_id         String  @unique
   first_name      String?
   last_name       String?
+  gender          String?
   date_of_birth   String?
   personal_mobile String? @unique
   personal_email  String? @unique
@@ -120,14 +120,16 @@ model LeaveProfile {
 model ProjectProfile {
   id                String  @id @default(cuid())
   user_id           String
-  project_id        String  @unique
+  project_id        String
   project_join_date String?
   project_exit_date String?
   role              String?
   status            String?
 
-  user    User     @relation(fields: [user_id], references: [id])
+  user    User?    @relation(fields: [user_id], references: [id])
   Project Project? @relation(fields: [project_id], references: [id])
+
+  @@unique([project_id, user_id])
 }
 
 model WorkLocation {
@@ -150,16 +152,14 @@ model Project {
   project_name String  @unique
   client_name  String?
   department   String?
-  manager_id   String?
   start_date   String?
   end_date     String?
   description  String?
 
-  manager User?       @relation(fields: [manager_id], references: [id])
-  dept    Department? @relation(fields: [department], references: [dept])
-  client  Client?     @relation(fields: [client_name], references: [name])
+  dept   Department? @relation(fields: [department], references: [dept])
+  client Client?     @relation(fields: [client_name], references: [name])
 
-  ProjectProfile ProjectProfile?
+  ProjectProfile ProjectProfile[]
 }
 
 model Client {

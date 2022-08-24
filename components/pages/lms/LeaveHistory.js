@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ExclamationIcon } from "@heroicons/react/solid";
+import getRandomUsers from "../../../lib/mock_data";
 
 function classNames(status) {
   let class_name =
@@ -23,6 +24,8 @@ function LeaveHistory(props) {
   const [isLoading, setLoading] = useState(true);
   const [leaveType, setLeaveType] = useState("all");
   const [leaveStatus, setLeaveStatus] = useState("all");
+  const random_data = getRandomUsers(10);
+  console.log("random_data", random_data);
 
   useEffect(() => {
     setLoading(true);

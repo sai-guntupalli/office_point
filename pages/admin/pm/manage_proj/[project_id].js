@@ -1,7 +1,8 @@
 import PMTabs from "../../../../components/pages/pm/PMTabs";
 import { getSession } from "next-auth/react";
-import ManageProjComp from "../../../../components/pages/pm/ManageProj";
 import { useRouter } from "next/router";
+import ProjectDetails from "../../../../components/pages/pm/ProjDetails";
+import ProjectMembers from "../../../../components/pages/pm/ProjectMembers";
 
 function ManageProj(props) {
   const router = useRouter();
@@ -10,7 +11,8 @@ function ManageProj(props) {
   return (
     <>
       <PMTabs />
-      <ManageProjComp pid={pid?.project_id} projects={props?.projects} />
+      <ProjectDetails pid={pid?.project_id} projects={props?.projects} />
+      <ProjectMembers pid={pid?.project_id} />
     </>
   );
 }

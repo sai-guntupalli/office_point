@@ -53,7 +53,7 @@ export async function getServerSideProps(context) {
       },
     });
 
-    const project_profile = await prisma.ProjectProfile.findMany({
+    const project_profile_arr = await prisma.ProjectProfile.findMany({
       where: {
         user_id: user_data?.id,
         status: "current",
@@ -63,6 +63,11 @@ export async function getServerSideProps(context) {
         Project: true,
       },
     });
+
+    let project_profile = {};
+    if (project_profile_arr.length > 0) {
+      project_profile = project_profile_arr[0];
+    }
 
     const address = await prisma.Address.findUnique({
       where: {
@@ -81,7 +86,7 @@ export async function getServerSideProps(context) {
         user_data: user_data,
         professional_profile: professional_profile,
         personal_profile: personal_profile,
-        project_profile: project_profile[0],
+        project_profile: project_profile,
         address: address,
       },
     };

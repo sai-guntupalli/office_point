@@ -10,13 +10,15 @@ function ListProj(props) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/org/admin/pm/projects/`)
+    fetch(`/api/org/admin/pm/projects/all`)
       .then((res) => res.json())
       .then((data) => {
         setProjects(data);
         setLoading(false);
       });
   }, [dept, client]);
+
+  console.log("projects", projects);
 
   return (
     <>
@@ -103,7 +105,7 @@ function ListProj(props) {
                           scope="col"
                           className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-white"
                         >
-                          Manager
+                          Members
                         </th>
                         <th
                           scope="col"
@@ -144,7 +146,7 @@ function ListProj(props) {
                             key={project._id}
                             className="whitespace-nowrap px-3 py-4 text-sm text-black-500"
                           >
-                            {project.manager_id}
+                            {project?.manager_id}
                           </td>
                           <td
                             key={project._id}

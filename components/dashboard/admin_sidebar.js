@@ -27,8 +27,8 @@ function AdminSidebar(props) {
       icon: UserGroupIcon,
     },
     {
-      name: "Upload Data",
-      href: "/admin/upload_data",
+      name: "Mock Data",
+      href: "/admin/mock_data",
       icon: DocumentReportIcon,
     },
   ];

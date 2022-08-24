@@ -33,14 +33,17 @@ export async function getServerSideProps(context) {
       include: {
         ProjectProfile: true,
         Address: true,
-        Project: true,
       },
       where: {
         email: session?.user?.email,
       },
     });
 
-    const allUsers = await prisma.User.findMany();
+    const allUsers = await prisma.User.findMany({
+      select: {
+        id: true,
+      },
+    });
     const allLocs = await prisma.workLocation.findMany();
     const allDesignations = await prisma.Designation.findMany();
     const allProjects = await prisma.Project.findMany();
